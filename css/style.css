@@ -1,0 +1,15 @@
+.container {
+    background-color: white;
+    margin: 20%;
+    box-shadow: 25px 25px 25px gray;
+}
+
+.checkout{
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+.upper {
+    display: flex;
+    
+}
