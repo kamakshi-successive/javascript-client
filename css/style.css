@@ -1,7 +1,17 @@
 .container {
     background-color: white;
-    margin: 20%;
+    margin: 10%;
     box-shadow: 25px 25px 25px gray;
+}
+
+.upper {
+    display: flex;
+    border: .5px solid rgb(224,222,228);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 0px;
+    padding-left: 6px;
+    align-items: center;
 }
 
 .checkout{
@@ -9,7 +19,50 @@
     flex-grow: 1;
 }
 
-.upper {
-    display: flex;
+.path {
+    flex-grow: 1;
     
 }
+
+.lower {
+    display: flex;
+    border: .10px solid lightgray;
+}
+
+ul.breadcrumb {
+    background-color: white;
+}
+
+ul.breadcrumb li{
+    display: inline;
+    font-size: 18px;
+}
+
+ul.breadcrumb li+li:before {
+    color: black;
+    content: "/\00a0";
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.icon {
+    margin-right: 7px;
+    background-color: black;
+    color: white;
+    padding: 1px 2px 2px 2px;
+}
+
+.paymentblock {
+    flex-grow: 1;
+}
+
+.cart {
+    padding-top : 10px;
+    padding-bottom: 10px;
+    padding-left: 6px;
+    flex-grow:1;
+    background-color: lightgray;
+}
+
