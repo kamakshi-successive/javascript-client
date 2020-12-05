@@ -4,6 +4,11 @@
     box-shadow: 25px 25px 25px gray;
 }
 
+.background {
+    background-image: url('./images/products/background.jpg');
+    display: flex;
+}
+  
 .upper {
     display: flex;
     border: .5px solid rgb(224,222,228);
@@ -26,7 +31,11 @@
 
 .lower {
     display: flex;
-    border: .10px solid lightgray;
+    flex-direction: row;
+    background-color: white;
+    border: 1px solid lightgrey;
+    width: 100%;
+    border-top: 0%;
 }
 
 ul.breadcrumb {
@@ -66,3 +75,214 @@ ul.breadcrumb li+li:before {
     background-color: lightgray;
 }
 
+.lower--left {
+    margin: .1%;
+    flex: 3;
+}
+
+.lower--left--up {
+    height: 45%;
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px
+}
+
+.Wallet {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: row;
+    height: 10%;
+    padding-left: 10px;
+    color: grey;
+    border-bottom: 1px solid lightgrey;
+}
+
+.NewCard {
+    align-items: flex-end;
+    display: flex;
+    flex-direction: row;
+    padding-left: 10px;
+    height: 0%;
+    color: grey;
+    border-bottom: 1px solid lightgrey;
+}
+
+.lower--left--up-cards {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.lower--left--up--cards--dis {
+    height: 65%;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-grow: 1;
+    padding-left: 16%;
+    padding-top: 19%;
+    padding-bottom: 0%;
+}
+
+.lower--left--up--cards--master  {
+    height: 65%;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-grow: 1;
+    padding-left: 16%;
+    padding-top: 19%;
+    padding-bottom: 0   
+}
+
+.lower--left--up--cards--visa  {
+    height: 65%;
+    display: flex;
+    flex-direction: row;
+    width: 80%;
+    flex-grow: 1;
+    padding-left: 16%;
+    padding-top: 19%;
+    padding-bottom: 0   
+}
+
+.cardStatement {
+    padding-left: 16%;
+    color: grey;
+    font-size: x-small;
+    text-align: center;
+    display: flex;
+    padding-bottom: 30%;
+}
+
+.lower-left-down {
+    padding-left: 26%;
+    padding-top: 0%;
+}
+
+input[type=text] {
+    width: 60%;
+    padding: 2% 2%;
+    margin: 2% 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type=submit] {
+    width: 60%;
+    background-color: #4CAF50;
+    color: white;
+    padding: 2% 2%;
+    margin: 1% 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.lower-left-down>input:nth-child(5) {
+    width: 30%;
+  }
+  
+.lower-left-down>input:nth-child(6) {
+    width: 29%;
+  }
+
+.lower--right {
+    display: flex;
+    flex-direction: column;
+    flex: 2;
+    border: 1px solid lightgrey;
+    width: 100%;
+    background-color: rgb(217, 229, 236);
+    border-top: 0px;
+    border-right: 0px;
+    border-bottom: 0px;
+}
+
+.lower--right--items {
+    height: 15%;
+    flex-direction: row;
+    display: flex;    
+}
+
+.lower--right--image {
+    height: 46%;
+    display: block;
+    width: 36%;
+    margin-top: 10%;
+    margin-left: 15%;
+    border: 5px solid rgb(190,186,186);
+    margin-right: 0%;
+}
+
+.lower--right--quantity {
+    color: black;
+    margin-left: -16%;
+    font-size: 15px;
+    width: 137%;
+}
+
+.lower--right--prices {
+    flex-direction: row;
+    display: flex;
+    padding-left: 11px;
+    padding-right: 2%;
+    justify-content: space-between;
+}
+
+.lower--right--total {
+    border-top: 1px solid rgb(153, 151, 151);
+  display: flex;
+  justify-content: space-between;
+  padding-top: 30px; 
+}
+
+.lower--right--product {
+    font-size: 100%;
+    font-weight: bold;
+    margin-top: 30%;
+    margin-left: -14%;
+    width: 300%;
+  }
+  
+  .lower--right--itemColor {
+    color: gray;
+    font-size: 15px;
+    margin-left: -16%;
+  
+  }
+  
+  .lower--right--price {
+    font-weight: bold;
+    padding-right: 2%;
+  }
+  
+  .lower--right--details {
+    padding-right: 27%;
+    margin-right: 14%;
+  }
+  
+  .lower--right--value {
+    padding-top: 4%;
+    padding-right: 2%;
+  }
+  
+  .lower--right--total--price {  
+    font-size: 15px;
+    color: black;
+    height: 10%;
+    margin-left: 32%;
+    width: 300%;
+  }
+  
+  .lower--right--prices-subtotal {
+    border-top: 1px solid grey;
+    flex-direction: row;
+    display: flex;
+    padding-left: 11px;
+    margin-right: 2%;
+    justify-content: space-between;
+    padding-top: 5%
+  }
