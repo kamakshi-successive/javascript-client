@@ -286,3 +286,63 @@ input[type=submit] {
     justify-content: space-between;
     padding-top: 5%
   }
+
+  @media screen and (max-width: 790px) {
+    .lower {
+        flex-direction: column-reverse;
+    }
+  }
+  
+  @media (max-width: 500px ){
+    .lower--left--up--cards {
+        flex-direction: column;
+       
+    }
+  
+  
+    .lower--left--up--cards>div:nth-child(1)>img:nth-child(1) {
+        height: 80%;
+        display: block;
+        width: 80%;
+        padding: 2% 5% 8% 8%;
+        flex-grow: 1;
+    }
+  
+    .lower--left--up--cards>div:nth-child(2)>img:nth-child(1) {
+        height: 80%;
+        display: block;
+        width: 80%;
+        padding: 2% 5% 8% 8%;
+        flex-grow: 1;
+    }
+  
+    .lower--left--up--cards>div:nth-child(3)>img:nth-child(1) {
+        height: 80%;
+        display: block;
+        width: 80%;
+        padding: 2% 5% 8% 8%;
+        flex-grow: 1;
+    }
+  }
+  
+  @media only screen and (max-width: 992px){
+    .container{
+        margin-left: 20px;
+        margin-right: 20px;
+    }
+  }
+  
+  
+  @media screen and (min-width: 768) and (max-width: 992){
+    .lower--right{
+        flex: 1;
+    }
+    .lower--left{
+        flex: 1;
+    }
+  }
+  @media (max-width:756px){
+    ul.path.breadcrumb {
+        display: none;
+    }
+  }
