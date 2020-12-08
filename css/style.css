@@ -1,7 +1,7 @@
 .container {
     background-color: white;
     margin: 10%;
-    box-shadow: 25px 25px 25px gray;
+    box-shadow: 15px 15px 15px gray;
 }
 
 .upper {
@@ -21,7 +21,7 @@
 
 .path {
     flex-grow: 1;
-    
+    padding-right:480px;
 }
 
 .lower {
@@ -31,6 +31,7 @@
 
 ul.breadcrumb {
     background-color: white;
+    
 }
 
 ul.breadcrumb li{
@@ -56,6 +57,8 @@ ul.breadcrumb li+li:before {
 
 .paymentblock {
     flex-grow: 1;
+    padding-top: 10px;
+    padding-left: 6px;
 }
 
 .cart {
