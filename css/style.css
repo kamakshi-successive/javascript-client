@@ -1,11 +1,11 @@
 .container {
     background-color: white;
-    margin: 10%;
-    box-shadow: 25px 25px 25px gray;
+    margin: 5%;
+    box-shadow: 15px 15px 15px gray;
 }
 
 .background {
-    background-image: url('./images/products/background.jpg');
+    background-image: url('../images/products/background.jpg');
     display: flex;
 }
   
@@ -26,7 +26,7 @@
 
 .path {
     flex-grow: 1;
-    
+    padding-right:480px;
 }
 
 .lower {
@@ -40,6 +40,7 @@
 
 ul.breadcrumb {
     background-color: white;
+    
 }
 
 ul.breadcrumb li{
@@ -65,6 +66,8 @@ ul.breadcrumb li+li:before {
 
 .paymentblock {
     flex-grow: 1;
+    padding-top: 10px;
+    padding-left: 6px;
 }
 
 .cart {
@@ -92,19 +95,20 @@ ul.breadcrumb li+li:before {
     display: flex;
     flex-direction: row;
     height: 10%;
-    padding-left: 10px;
+    padding-left: 8px;
     color: grey;
     border-bottom: 1px solid lightgrey;
 }
 
 .NewCard {
+    border-bottom: 1px solid lightgrey;
     align-items: flex-end;
     display: flex;
     flex-direction: row;
-    padding-left: 10px;
+    padding-left: 8px;
     height: 0%;
     color: grey;
-    border-bottom: 1px solid lightgrey;
+    margin-top: 10px ;
 }
 
 .lower--left--up-cards {
@@ -114,35 +118,35 @@ ul.breadcrumb li+li:before {
 }
 
 .lower--left--up--cards--dis {
-    height: 65%;
+    height: 55%;
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 90%;
     flex-grow: 1;
     padding-left: 16%;
-    padding-top: 19%;
+    padding-top: 9%;
     padding-bottom: 0%;
 }
 
 .lower--left--up--cards--master  {
-    height: 65%;
+    height: 55%;
     display: flex;
     flex-direction: row;
-    width: 80%;
+    width: 90%;
     flex-grow: 1;
     padding-left: 16%;
-    padding-top: 19%;
+    padding-top: 9%;
     padding-bottom: 0   
 }
 
 .lower--left--up--cards--visa  {
-    height: 65%;
+    height: 55%;
     display: flex;
     flex-direction: row;
     width: 80%;
     flex-grow: 1;
     padding-left: 16%;
-    padding-top: 19%;
+    padding-top: 9%;
     padding-bottom: 0   
 }
 
@@ -152,11 +156,13 @@ ul.breadcrumb li+li:before {
     font-size: x-small;
     text-align: center;
     display: flex;
-    padding-bottom: 30%;
+    padding-bottom: 15%;
 }
 
 .lower-left-down {
+    height: auto;
     padding-left: 26%;
+    padding-bottom: 10%;
     padding-top: 0%;
 }
 
@@ -195,7 +201,7 @@ input[type=submit] {
     flex: 2;
     border: 1px solid lightgrey;
     width: 100%;
-    background-color: rgb(217, 229, 236);
+    background-color: rgb(239, 244, 247);
     border-top: 0px;
     border-right: 0px;
     border-bottom: 0px;
@@ -208,11 +214,11 @@ input[type=submit] {
 }
 
 .lower--right--image {
-    height: 46%;
+    height: 56%;
     display: block;
     width: 36%;
     margin-top: 10%;
-    margin-left: 15%;
+    margin-left: 5%;
     border: 5px solid rgb(190,186,186);
     margin-right: 0%;
 }
@@ -260,8 +266,8 @@ input[type=submit] {
   }
   
   .lower--right--details {
-    padding-right: 27%;
-    margin-right: 14%;
+    padding-right: 47%;
+
   }
   
   .lower--right--value {
