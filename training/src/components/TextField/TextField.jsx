@@ -1,24 +1,29 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Input, Error } from './style';
 
-// class TextField extends Component {
-//     render(){
-const TextField = () => {
-  const { disabled, value, error } = this.props;
+const TextField = (props) => {
+  const { disabled, value, error } = props;
   if (Error) {
     return (
       <>
-        <Input type = "text" value = {value} disabled= {disabled} error />
-                <br></br>
-            <Error>{ error }</Error>
-                </>
-            );
+        <Input type="text" value={value} disabled={disabled} error />
+        <br />
+        <Error>{ error }</Error>
+      </>
+    );
   }
-        else{
-            return(
-            <Input type="text" value={value} disabled={disabled}/>
-            );
-        }
-    };
+
+  return (
+    <Input type="text" value={value} disabled={disabled} />
+  );
+};
+
+TextField.propTypes = {
+  disabled: PropTypes.bool.isRequired,
+  value: PropTypes.number.isRequired,
+  error: PropTypes.string.isRequired,
+};
 
 export default TextField;
