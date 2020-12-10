@@ -338,7 +338,6 @@ hr {
     .container {
         margin-left: 20px;
         margin-right: 20px;
-        margin-top: 2%;
     }
 }
 
@@ -347,6 +346,13 @@ hr {
         margin-left: 100px;
         margin-right: 100px;
     }
+    .lower--left--up-cards {
+        flex: 2;
+    }
+    .lower-left-down {
+        flex: 3;
+    }
+
 }
 
 @media screen and (max-width: 790px) {
@@ -359,17 +365,18 @@ hr {
     .lower--left--up-cards {
         flex-direction: column-reverse;
     }
-    .lower-left-down {}
 }
 
-@media screen and (aspect-ration: 1/1) and (max-width: 768px) and (max-width: 992px) {
+@media screen and (max-width: 768px) and (max-width: 992px) {
     .lower--left--up-cards {
-        flex-direction: column-reverse;
+        flex: 1;
     }
-    .lower-left-down {}
+    .lower-left-down {
+        flex: 1;
+    }
 }
 
-@media screen and (max-width: 600px) {
+@media (max-width: 600px) {
     .lower--left--up-cards {
         width: 100%;
     }
@@ -378,25 +385,23 @@ hr {
     }
 }
 
-@media screen and (max-width: 400px) {
+@media (max-width: 400px) {
     .Wallet {
         width: 100%;
     }
+    .lower--left--up-cards {
+        display:flex;
+        flex-direction: column-reverse;
+ 
 }
 
-@media screen and (max-width: 790px) {
+@media (max-width: 790px) {
     .lower {
         flex-direction: column-reverse;
     }
 }
 
-@media (max-width: 400px) {
-    .lower--left--up-cards {
-        flex-direction: column-reverse;
-    }
-}
-
-@media only screen and (max-width: 752px) {
+@media (max-width: 752px) {
     .breadcrumb {
         display: none;
     }
