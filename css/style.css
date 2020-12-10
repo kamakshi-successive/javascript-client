@@ -210,14 +210,10 @@
     }
     
     .lower--right--items--box {
-        border-bottom: 1px solid grey;
+        display: flex;
+        flex-direction: row;
         height: 90px;
-        width: 500px;
-    }
-    
-    .lower--right--items--box1 {
-        height: 90px;
-        width: 500px;
+        width: 450px;
     }
     
     .lower-right-img {
@@ -244,14 +240,18 @@
     }
     
     .lower--right--details {
-        margin-left: 25%;
-        height: 100%;
-        width: 20%;
+        margin-top: 8px;
+    }
+    
+    br {
+        content: "";
+        margin: 2em;
+        display: block;
+        font-size: 24%;
     }
     
     .lower--right--quantity {
         color: black;
-        margin-left: -16%;
         font-size: 15px;
         width: 137%;
     }
@@ -285,7 +285,7 @@
     .lower--right--itemColor {
         color: gray;
         font-size: 15px;
-        margin-left: -16%;
+        font-style: italic;
     }
     
     .lower--right--price {
@@ -298,14 +298,22 @@
         width: 100%;
     }
     
+    hr {
+        border: 0;
+        clear: both;
+        display: block;
+        width: 96%;
+        background-color: grey;
+        height: 1px;
+    }
+    
     .taxes {
         margin-bottom: 10px;
     }
     
     .lower--right--value {
-        padding-left: 90%;
+        margin-left: 40%;
         margin-bottom: 10px;
-        ;
     }
     
     .lower--right--total--price {
