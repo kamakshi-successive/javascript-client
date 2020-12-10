@@ -312,8 +312,9 @@
     }
     
     .lower--right--value {
-        margin-left: 40%;
-        margin-bottom: 10px;
+        margin-left: auto;
+        padding-left: 10px;
+        margin-bottom: 20px;
     }
     
     .lower--right--total--price {
