@@ -334,12 +334,6 @@ hr {
     padding-top: 5%
 }
 
-@media only screen and (max-width: 992px) {
-    .container {
-        margin-left: 20px;
-        margin-right: 20px;
-    }
-}
 
 @media only screen and (min-width: 992px) {
     .container {
@@ -355,17 +349,13 @@ hr {
 
 }
 
-@media screen and (max-width: 790px) {
-    .lower {
-        flex-direction: column-reverse;
+@media only screen and (max-width: 992px) {
+    .container {
+        margin-left: 20px;
+        margin-right: 20px;
     }
 }
 
-@media screen and (aspect-ration: 3/2) and (min-width: 992px) {
-    .lower--left--up-cards {
-        flex-direction: column-reverse;
-    }
-}
 
 @media screen and (max-width: 768px) and (max-width: 992px) {
     .lower--left--up-cards {
@@ -383,21 +373,17 @@ hr {
     .lower-left-down {
         width: 100%;
     }
+    .lower--left {
+        flex-direction: column-reverse;
+    }
 }
+
 
 @media (max-width: 400px) {
-    .Wallet {
-        width: 100%;
-    }
     .lower--left--up-cards {
-        display:flex;
-        flex-direction: column-reverse;
- 
-}
-
-@media (max-width: 790px) {
-    .lower {
-        flex-direction: column-reverse;
+       display: flex;
+       flex-direction: column-reverse;
+        width: 100%;
     }
 }
 
@@ -405,4 +391,4 @@ hr {
     .breadcrumb {
         display: none;
     }
-}
+ }
