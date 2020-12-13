@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { PUBLIC_IMAGE_FOLDER, DEFAULT_BANNER_IMAGE } from '../../config/constant';
@@ -17,7 +18,6 @@ class Slider extends React.Component {
     this.id = setInterval(() => {
       const { current } = this.state;
       if (banners.length) {
-        // eslint-disable-next-line max-len
         const newBanner = random ? getRandomNumber(banners.length) : getNextRoundRobin(banners.length, current);
         this.setState({ current: newBanner });
       }
