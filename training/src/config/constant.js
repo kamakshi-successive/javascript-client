@@ -1,3 +1,5 @@
+import * as yup from 'yup';
+
 export const PUBLIC_IMAGE_FOLDER = '/images/';
 export const DEFAULT_BANNER_IMAGE = 'banners/default.png';
 export const banners = ['cloud.jpg', 'dns-server.png', 'full-stack-web-development.jpg', 'js.jpg', 'load-balancer.png'];
@@ -42,3 +44,12 @@ export const radioOptionsFootball = [
     value: 'striker',
   },
 ];
+
+const schema = yup.object().shape({
+  name: yup.string().min(3, 'mini dfrsfs 3').required('Name is a required field'),
+  sport: yup.string().required('Sport is a required field'),
+  cricket: yup.string().when('sport', { is: 'cricket', then: yup.string().required('What you do is a required field') }),
+  football: yup.string().when('sport', { is: 'football', then: yup.string().required('What you do is a required field') }),
+});
+
+export { schema };
