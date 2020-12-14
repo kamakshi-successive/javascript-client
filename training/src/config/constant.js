@@ -7,7 +7,7 @@ export const banners = ['cloud.jpg', 'dns-server.png', 'full-stack-web-developme
 export const selectOptions = [
   {
     label: 'Cricket',
-    value: 'Cricket',
+    value: 'cricket',
   },
   {
     label: 'Football',
@@ -45,15 +45,11 @@ export const radioOptionsFootball = [
   },
 ];
 
-const schema = yup.object().shape(
-  {
-    name: yup.string().min(3, 'Please enter 3 characters').required('Your name is required'),
-    sport: yup.string().required('Please select a sport'),
-    position: yup.string().required().when('sport', {
-      is: 'cricket' || 'football',
-      then: yup.string().required('Position is a required field'),
-    }),
-  },
-);
+const schema = yup.object().shape({
+  name: yup.string().min(3, 'mini dfrsfs 3').required('Name is a required field'),
+  sport: yup.string().required('Sport is a required field'),
+  cricket: yup.string().when('sport', { is: 'cricket', then: yup.string().required('What you do is a required field') }),
+  football: yup.string().when('sport', { is: 'football', then: yup.string().required('What you do is a required field') }),
+});
 
 export { schema };
