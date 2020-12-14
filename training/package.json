@@ -22,6 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "./node_modules/.bin/eslint src",
+    "test:c": "react-scripts test --coverage --watchAll",
     "lint:fix": "npm run lint --fix",
     "commit": "git-cz"
   },

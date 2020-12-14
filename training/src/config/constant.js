@@ -5,7 +5,7 @@ export const banners = ['cloud.jpg', 'dns-server.png', 'full-stack-web-developme
 export const selectOptions = [
   {
     label: 'Cricket',
-    value: 'Cricket',
+    value: 'cricket',
   },
   {
     label: 'Football',
