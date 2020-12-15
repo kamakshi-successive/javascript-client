@@ -340,11 +340,11 @@ hr {
         margin-left: 100px;
         margin-right: 100px;
     }
-    .lower--left--up {
-        flex: 2;
-    }
-    .lower-left-down1 {
+    .lower--left {
         flex: 3;
+    }
+    .lower--right {
+        flex: 2;
     }
 
 }
@@ -358,10 +358,10 @@ hr {
 
 
 @media (max-width: 768px) and (max-width: 992px) {
-    .lower--left--up-cards {
+    .lower--right {
         flex: 1;
     }
-    .lower-left-down {
+    .lower--left {
         flex: 1;
     }
 }
