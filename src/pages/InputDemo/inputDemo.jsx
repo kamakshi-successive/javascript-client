@@ -98,6 +98,7 @@ render() {
   const {
     name, sport, error, isvalid,
   } = this.state;
+  console.log('state: ', this.state);
   return (
     <>
 
