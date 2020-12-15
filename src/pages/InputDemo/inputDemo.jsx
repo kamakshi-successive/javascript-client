@@ -16,8 +16,6 @@ class InputDemo extends React.Component {
       sport: '',
       cricket: '',
       football: '',
-      error: {},
-      isvalid: false,
       touched: {
         name: false,
         sport: false,
@@ -25,7 +23,6 @@ class InputDemo extends React.Component {
         football: false,
       },
     };
-    console.log(this.state);
   }
 
 handleNameChange = (e) => {
@@ -58,86 +55,72 @@ RadioOption = () => {
   return (radioValue);
 };
 
-hasErrors = () => {
+getError = (field) => {
   const { touched } = this.state;
-  const errormsg = {};
-  schema.validate(this.state, { abortEarly: false })
-    .then(() => {
-      this.setState({ error: {}, isvalid: true });
-    })
-    .catch((err) => {
-      err.inner.forEach((element) => {
-        const { path, message } = element;
-        if (touched[path]) {
-          errormsg[path] = message;
-        }
-      });
-      this.setState({ error: errormsg, isvalid: false });
-    });
+  if (touched[field] && this.hasErrors()) {
+    try {
+      schema.validateSyncAt(field, this.state);
+    } catch (err) {
+      return err.message;
+    }
+  }
+  return true;
+};
+
+hasErrors = () => {
+  try {
+    schema.validateSync(this.state);
+  } catch (err) {
+    return true;
+  }
+  return false;
 }
 
 isTouched = (field) => {
   const { touched } = this.state;
-  console.log('touched', touched);
   this.setState({
     touched: {
       ...touched,
       [field]: true,
     },
-  }, () => {
-    this.hasErrors();
   });
 }
 
-getErrors = (field) => {
-  const { touched, error } = this.state;
-  return touched[field] ? error[field] : '';
-}
-
 render() {
-  const {
-    name, sport, error, isvalid,
-  } = this.state;
-  console.log('state: ', this.state);
+  const { sport } = this.state;
   return (
     <>
-
-      <p><b>Name</b></p>
-      <TextField
-        onChange={this.handleNameChange}
-        value={name}
-        error={error.name}
-        onBlur={() => this.isTouched('name')}
-      />
-      <p>
-        <b>Select the game you play?</b>
-      </p>
-      <SelectField
-        defaultOptions="Select"
-        onChange={this.handleSportChange}
-        value={sport}
-        onBlur={() => this.isTouched('sport')}
-        options={selectOptions}
-        error={error.sport}
-      />
       <div>
-        {
-          (sport === '' || sport === 'Select') ? '' : (
-            <>
-              <p><b>What you do?</b></p>
-              <RadioField
-                onChange={this.handlePositionChange}
-                options={this.RadioOption()}
-                onBlur={() => this.isTouched('sport')}
-                error={error.sport}
-              />
-            </>
-          )
-        }
-      </div>
-      <div align="right">
-        <Button value="Cancel" onClick={() => {}} />
-        <Button value="Submit" disabled={!isvalid} onClick={() => {}} />
+        <p><b>Name:</b></p>
+        <TextField error={this.getError('name')} onChange={this.handleNameChange} onBlur={() => this.isTouched('name')} />
+        <p><b>Select the game you play?</b></p>
+        <SelectField
+          error={this.getError('sport')}
+          onChange={this.handleSportChange}
+          options={selectOptions}
+          defaultText="Select"
+          onBlur={() => this.isTouched('sport')}
+        />
+        <div>
+          {
+            (sport === '' || sport === 'Select') ? ''
+              : (
+                <>
+                  <p><b>What you do?</b></p>
+                  <RadioField
+                    error={this.getError(sport)}
+                    options={this.RadioOption()}
+                    onChange={this.handlePositionChange}
+                    onBlur={() => this.isTouched(sport)}
+                  />
+                </>
+              )
+          }
+        </div>
+        <div>
+          <Button value="Cancel" />
+          <Button value="Submit" disabled={this.hasErrors()} />
+        </div>
       </div>
     </>
   );
