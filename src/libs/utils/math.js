@@ -1,5 +1,5 @@
-function getRandomNumber() {
-  return (Math.floor((Math.random() * -10)));
+function getRandomNumber(max) {
+  return Math.floor(Math.random() * Math.floor(max));
 }
 function getNextRoundRobin(max, current) {
   return (current + 1) % max;
