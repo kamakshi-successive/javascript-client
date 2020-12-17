@@ -54,6 +54,7 @@ class AddDialog extends React.Component {
     return false;
   }
 
+  // eslint-disable-next-line consistent-return
   getError = (field) => {
     const { touched } = this.state;
     if (touched[field] && this.hasErrors()) {

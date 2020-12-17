@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import { Button } from '@material-ui/core';
-import { AddDialog } from './components';
+import { AddDialog } from './components/AddDialog.';
 
 class Trainee extends React.Component {
   constructor(props) {
