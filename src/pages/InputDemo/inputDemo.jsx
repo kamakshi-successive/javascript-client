@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable no-console */
 import React from 'react';
 import {
@@ -33,15 +34,15 @@ handleNameChange = (e) => {
 
 handleSportChange = (e) => {
   this.setState({ sport: e.target.value }, () => console.log(this.state));
-  if (e.target.value === 'Select') {
+  if (e.target.value === selectOptions.value) {
     this.setState({ sport: '' });
   }
-  return e.target.value === 'cricket' ? this.setState({ football: '' }) : this.setState({ cricket: '' });
+  return e.target.value === radioOptionsCricket.value ? this.setState({ cricket: e.target.value }) : this.setState({ football: e.target.value });
 }
 
 handlePositionChange = (e) => {
   const { sport } = this.state;
-  return sport === 'cricket' ? this.setState({ cricket: e.target.value }, () => console.log(this.state)) : this.setState({ football: e.target.value }, () => console.log(this.state));
+  return sport === radioOptionsCricket.value ? this.setState({ cricket: e.target.value }, () => console.log(this.state)) : this.setState({ football: e.target.value }, () => console.log(this.state));
 }
 
 RadioOption = () => {
@@ -103,7 +104,7 @@ render() {
         />
         <div>
           {
-            (sport === '' || sport === 'Select') ? ''
+            (sport === '' || sport === selectOptions.value) ? ''
               : (
                 <>
                   <p><b>What you do?</b></p>
