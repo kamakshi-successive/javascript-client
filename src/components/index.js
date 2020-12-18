@@ -4,3 +4,5 @@ export { RadioField } from './RadioField';
 export { SelectField } from './SelectField';
 export { Button } from './Button';
 export { Text } from './Math';
+export { Footer } from './Footer';
+export { AuthLayout, PrivateLayout } from './layouts';
