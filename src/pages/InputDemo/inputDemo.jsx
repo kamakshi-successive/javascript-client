@@ -28,15 +28,15 @@ handleNameChange = (e) => {
 
 handleSportChange = (e) => {
   this.setState({ sport: e.target.value }, () => console.log(this.state));
-  if (e.target.value === selectOptions.value) {
+  if (e.target.value === 'Select') {
     this.setState({ sport: '' });
   }
-  return e.target.value === radioOptionsCricket.value ? this.setState({ cricket: e.target.value }) : this.setState({ football: e.target.value });
+  return e.target.value === 'cricket' ? this.setState({ football: '' }) : this.setState({ cricket: '' });
 }
 
 handlePositionChange = (e) => {
   const { sport } = this.state;
-  return sport === radioOptionsCricket.value ? this.setState({ cricket: e.target.value }, () => console.log(this.state)) : this.setState({ football: e.target.value }, () => console.log(this.state));
+  return sport === 'cricket' ? this.setState({ cricket: e.target.value }, () => console.log(this.state)) : this.setState({ football: e.target.value }, () => console.log(this.state));
 }
 
 RadioOption = () => {
@@ -52,6 +52,7 @@ RadioOption = () => {
 
 render() {
   const { sport } = this.state;
+  console.log('state:', this.state);
   return (
     <>
       <div>
@@ -66,7 +67,7 @@ render() {
         />
         <div>
           {
-            (sport === '' || sport === selectOptions.value) ? ''
+            (sport === '' || sport === 'Select') ? ''
               : (
                 <>
                   <p><b>What you do?</b></p>
