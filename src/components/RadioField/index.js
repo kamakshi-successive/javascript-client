@@ -1,1 +1,1 @@
-export { default as RadioField } from './RadioFiled';
+export { default as RadioField } from './RadioField';

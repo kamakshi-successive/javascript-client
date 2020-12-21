@@ -5,5 +5,8 @@ margin-top: 4px;
 margin-bottom: 2%;
 color: red;
 `;
+const Error = styled.p`
+    color: red;
+    `;
 
-export default P;
+export { P, Error };

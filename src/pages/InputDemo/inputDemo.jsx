@@ -2,11 +2,11 @@
 /* eslint-disable no-console */
 import React from 'react';
 import {
-  TextField, SelectField, RadioField,
-} from '../../components';
+  TextField, Button, RadioField, SelectField,
+} from '../../components/index';
+
 import {
-  // eslint-disable-next-line no-unused-vars
-  selectOptions, radioOptionsCricket, radioOptionsFootball,
+  schema, selectOptions, radioOptionsCricket, radioOptionsFootball,
 } from '../../config/constant';
 
 class InputDemo extends React.Component {
@@ -17,6 +17,12 @@ class InputDemo extends React.Component {
       sport: '',
       cricket: '',
       football: '',
+      touched: {
+        name: false,
+        sport: false,
+        cricket: false,
+        football: false,
+      },
     };
   }
 
@@ -50,20 +56,52 @@ RadioOption = () => {
   return (radioValue);
 };
 
+getError = (field) => {
+  const { touched } = this.state;
+  if (touched[field] && this.hasErrors()) {
+    try {
+      schema.validateSyncAt(field, this.state);
+    } catch (err) {
+      return err.message;
+    }
+  }
+  return true;
+};
+
+hasErrors = () => {
+  try {
+    schema.validateSync(this.state);
+  } catch (err) {
+    return true;
+  }
+  return false;
+}
+
+isTouched = (field) => {
+  const { touched } = this.state;
+  this.setState({
+    touched: {
+      ...touched,
+      [field]: true,
+    },
+  });
+}
+
 render() {
   const { sport } = this.state;
   console.log('state:', this.state);
   return (
     <>
       <div>
-        <p><b>Name: </b></p>
-        <TextField error="" onChange={this.handleNameChange} />
-        <p><b>Select the game you Play?</b></p>
+        <p><b>Name:</b></p>
+        <TextField error={this.getError('name')} onChange={this.handleNameChange} onBlur={() => this.isTouched('name')} />
+        <p><b>Select the game you play?</b></p>
         <SelectField
-          error=""
+          error={this.getError('sport')}
           onChange={this.handleSportChange}
           options={selectOptions}
           defaultText="Select"
+          onBlur={() => this.isTouched('sport')}
         />
         <div>
           {
@@ -72,13 +110,18 @@ render() {
                 <>
                   <p><b>What you do?</b></p>
                   <RadioField
-                    error=""
+                    error={this.getError(sport)}
                     options={this.RadioOption()}
                     onChange={this.handlePositionChange}
+                    onBlur={() => this.isTouched(sport)}
                   />
                 </>
               )
           }
+        </div>
+        <div>
+          <Button value="Cancel" />
+          <Button value="Submit" disabled={this.hasErrors()} />
         </div>
       </div>
     </>

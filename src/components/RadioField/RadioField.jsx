@@ -1,6 +1,6 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import P from './style';
+import { P, Error } from './style';
 
 const RadioField = (props) => {
   // console.log('inside radio group', props);
@@ -9,7 +9,7 @@ const RadioField = (props) => {
   } = props;
   return (
     <>
-      <p><b>{heading}</b></p>
+      <P><b>{heading}</b></P>
       {
         options && options.length && options.map(({ value, label }) => (
           <Fragment key={label}>
@@ -19,9 +19,9 @@ const RadioField = (props) => {
           </Fragment>
         ))
       }
-      <P>
+      <Error>
         {error}
-      </P>
+      </Error>
     </>
   );
 };
