@@ -10,11 +10,10 @@ import {
   InputDemo,
   Login,
   NoMatch,
-  AuthRoute,
-  PrivateRoute,
   TextFieldDemo,
   Trainee,
 } from './pages';
+import { AuthRoute, PrivateRoute } from './routes/index';
 
 function App() {
   return (
