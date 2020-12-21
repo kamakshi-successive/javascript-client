@@ -3,9 +3,9 @@
 # dependencies
 /node_modules
 /.pnp
-/.eslintcache
 .pnp.js
 /package-lock.json
+/.eslintcache
 # testing
 /coverage
 
