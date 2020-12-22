@@ -5,7 +5,7 @@ width: 100%;
 padding: 1%;
 ${(props) => props.error
   && css`
-  border: 1px solid red;
+  border: 1px solid black;
   `};
 `;
 const Error = styled.p`

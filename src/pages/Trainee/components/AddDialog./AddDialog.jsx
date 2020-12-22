@@ -6,7 +6,7 @@ import {
 import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
-import Handler from './Handler';
+import CustomTextField from './CustomTextField';
 
 const passwordStyle = () => ({
   passfield: {
@@ -17,13 +17,28 @@ const passwordStyle = () => ({
     flex: 1,
   },
 });
+const config = [{
+  key: 'name',
+  label: 'Name',
+  icon: Person,
+},
+{
+  key: 'email',
+  label: 'Email',
+  icon: Email,
+},
+{
+  key: 'password',
+  label: 'Password',
+  icon: VisibilityOff,
+},
+{
+  key: 'confirmPassword',
+  label: 'Confirm Password',
+  icon: VisibilityOff,
+},
+];
 
-const constant = {
-  Name: Person,
-  Email,
-  Password: VisibilityOff,
-  'Confirm Password': VisibilityOff,
-};
 class AddDialog extends React.Component {
   constructor(props) {
     super(props);
@@ -78,7 +93,7 @@ class AddDialog extends React.Component {
   }
 
   passwordType = (key) => {
-    if (key === 'Password' || key === 'Confirm Password') {
+    if (key === 'password' || key === 'confirmPassword') {
       return 'password';
     }
     return '';
@@ -90,15 +105,15 @@ class AddDialog extends React.Component {
     } = this.props;
     const { name, email, password } = this.state;
     const ans = [];
-    Object.keys(constant).forEach((key) => {
-      ans.push(<Handler
-        label={key}
-        onChange={this.handleChange(key)}
-        onBlur={() => this.isTouched(key)}
-        helperText={this.getError(key)}
-        error={!!this.getError(key)}
-        icons={constant[key]}
-        type={this.passwordType(key)}
+    config.forEach((value) => {
+      ans.push(<CustomTextField
+        label={value.label}
+        onChange={this.handleChange(value.key)}
+        onBlur={() => this.isTouched(value.key)}
+        helperText={this.getError(value.key)}
+        error={!!this.getError(value.key)}
+        icons={value.icon}
+        type={this.passwordType(value.key)}
       />);
     });
 
@@ -131,7 +146,7 @@ class AddDialog extends React.Component {
         &nbsp;
             <div align="right">
               <Button onClick={onClose} color="primary">CANCEL</Button>
-              <Button variant="contained" color="primary" disabled={this.hasErrors()} onClick={() => onSubmit()({ name, email, password })}>SUBMIT</Button>
+              <Button variant="contained" color="primary" disabled={this.hasErrors()} onClick={() => onSubmit({ name, email, password })}>SUBMIT</Button>
             </div>
           </DialogContent>
         </Dialog>
