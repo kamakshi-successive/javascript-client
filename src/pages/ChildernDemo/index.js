@@ -1,1 +1,1 @@
-export { default as CalculatorDemo } from './childerenDemo';
+export { default as CalculatorDemo } from './childrenDemo';
