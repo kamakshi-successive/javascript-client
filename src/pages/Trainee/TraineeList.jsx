@@ -54,7 +54,7 @@ class TraineeList extends React.Component {
           <Table1
             id="id"
             data={trainees}
-            columns={[
+            column={[
               {
                 field: 'name',
                 label: 'Name',

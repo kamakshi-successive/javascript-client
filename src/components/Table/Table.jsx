@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -13,30 +13,38 @@ const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  header: {
+    color: 'grey',
+  },
 });
 
-export default function Table1(props) {
-  const classes = useStyles();
+function Table1(props) {
   const {
-    id, column, data,
+    classes, column, data,
   } = props;
   return (
     <>
       <TableContainer component={Paper}>
-        <Table className={classes.table} aria-label="simple table">
+        <Table className={classes.table}>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell>Email Address</TableCell>
+              {
+                column.map((
+                  { align, label },
+                ) => (
+                  <TableCell className={classes.header} align={align}>{label}</TableCell>
+                ))
+              }
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row) => (
-              <TableRow key={row.name}>
-                <TableCell component="th" scope="row">
-                  {row.name}
+            {data.map(({ name, email }) => (
+              <TableRow>
+                <TableCell align={column[0].align}>
+                  {' '}
+                  {name}
                 </TableCell>
-                <TableCell align="right">{row.calories}</TableCell>
+                <TableCell>{email}</TableCell>
 
               </TableRow>
             ))}
@@ -47,7 +55,9 @@ export default function Table1(props) {
   );
 }
 Table1.propTypes = {
-  id: PropTypes.string.isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   column: PropTypes.arrayOf(PropTypes.object).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
+
+export default withStyles(useStyles)(Table1);
