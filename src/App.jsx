@@ -1,9 +1,9 @@
 import React from 'react';
-import { InputDemo } from './pages';
+import { CalculatorDemo } from './pages';
 
 function App() {
   return (
-    <InputDemo />
+    <CalculatorDemo />
   );
 }
 
