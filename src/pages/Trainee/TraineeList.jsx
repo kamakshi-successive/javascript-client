@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/AddDialog';
 import trainees from './data/trainee';
+import { Table1 } from '../../components';
 
 const useStyles = (theme) => ({
   root: {
@@ -50,6 +51,22 @@ class TraineeList extends React.Component {
           <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
             ADD TRAINEELIST
           </Button>
+          <Table1
+            id="id"
+            data={trainees}
+            columns={[
+              {
+                field: 'name',
+                label: 'Name',
+                align: 'center',
+              },
+              {
+                field: 'email',
+                label: 'Email Address',
+              },
+
+            ]}
+          />
           <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
           <ul>
             {trainees.map(({ name, id }) => (
