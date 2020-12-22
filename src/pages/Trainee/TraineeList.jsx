@@ -1,9 +1,20 @@
-/* eslint-disable no-console */
 import React from 'react';
-import { Button } from '@material-ui/core';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/AddDialog';
+import trainees from './data/trainee';
 
-class Trainee extends React.Component {
+const useStyles = (theme) => ({
+  root: {
+    margin: theme.spacing(2),
+  },
+  dialog: {
+    textAlign: 'right',
+  },
+});
+
+class TraineeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,41 +24,49 @@ class Trainee extends React.Component {
 
   handleClickOpen = () => {
     this.setState({ open: true });
-  }
+  };
 
   handleClose = () => {
     const { open } = this.state;
     this.setState({ open: false });
     return open;
-  }
+  };
 
   handleSubmit = (data) => {
     this.setState({
       open: false,
     }, () => {
+      // eslint-disable-next-line no-console
       console.log(data);
     });
   }
 
   render() {
     const { open } = this.state;
+    const { match: { url }, classes } = this.props;
     return (
       <>
-        <Button
-          variant="outlined"
-          color="primary"
-          onClick={this.handleClickOpen}
-        >
-          <b>ADD TRAINEE</b>
-        </Button>
-        <AddDialog
-          open={open}
-          onClose={this.handleClose}
-          onSubmit={this.handleSubmit}
-        />
+        <div className={classes.root}>
+          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+            ADD TRAINEELIST
+          </Button>
+          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+          <ul>
+            {trainees.map(({ name, id }) => (
+              <li key={id}>
+                <Link to={`${url}/${id}`}>
+                  {name}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
       </>
     );
   }
 }
-
-export default Trainee;
+TraineeList.propTypes = {
+  match: PropTypes.objectOf(PropTypes.object).isRequired,
+  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+};
+export default withStyles(useStyles)(TraineeList);
