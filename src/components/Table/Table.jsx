@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -22,6 +23,7 @@ function Table1(props) {
   const {
     classes, column, data,
   } = props;
+  console.log('fss', classes.header);
   return (
     <>
       <TableContainer component={Paper}>
@@ -35,6 +37,7 @@ function Table1(props) {
                   <TableCell className={classes.header} align={align}>{label}</TableCell>
                 ))
               }
+
             </TableRow>
           </TableHead>
           <TableBody>
