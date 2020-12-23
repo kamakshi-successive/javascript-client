@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@material-ui/core';
 import { AddDialog } from './components/AddDialog.';
+import { Navbar } from '../components';
 
 class Trainee extends React.Component {
   constructor(props) {
@@ -33,6 +34,8 @@ class Trainee extends React.Component {
     const { open } = this.state;
     return (
       <>
+        <Navbar />
+        <br />
         <Button
           variant="outlined"
           color="primary"

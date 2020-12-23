@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { P, Error } from './style';
 
 const RadioField = (props) => {
-  // console.log('inside radio group', props);
   const {
     options, onChange, error, heading, onBlur,
   } = props;
