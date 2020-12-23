@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, InputAdornment } from '@material-ui/core';
-
-export default function Handler(props) {
+import { InputAdornment } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+// import PersonIcon from '@material-ui/icons'
+export default function CustomTextField(props) {
   const {
     error, helperText, onChange, onBlur, label, type, icons,
   } = props;
@@ -10,13 +11,20 @@ export default function Handler(props) {
   return (
     <>
       <TextField
-        required
-        id="outlined-required"
+        id="outlined-full-width"
         label={label}
-        variant="outlined"
+        autoComplete="off"
         fullWidth
-        onChange={onChange}
+        error={error}
+        helperText={helperText}
         onBlur={onBlur}
+        onChange={onChange}
+        placeholder=""
+        margin="normal"
+        type={type}
+        InputLabelProps={{
+          shrink: true,
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -24,15 +32,13 @@ export default function Handler(props) {
             </InputAdornment>
           ),
         }}
-        helperText={helperText}
-        error={error}
-        type={type}
+        variant="outlined"
       />
     </>
   );
 }
 
-Handler.propTypes = {
+CustomTextField.propTypes = {
   error: PropTypes.bool,
   helperText: PropTypes.string,
   onChange: PropTypes.func.isRequired,
@@ -41,7 +47,7 @@ Handler.propTypes = {
   type: PropTypes.string,
   icons: PropTypes.instanceOf(Object),
 };
-Handler.defaultProps = {
+CustomTextField.defaultProps = {
   error: false,
   helperText: '',
   label: '',
