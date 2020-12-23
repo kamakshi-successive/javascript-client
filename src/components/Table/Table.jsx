@@ -34,7 +34,8 @@ function Table1(props) {
                 column.map((
                   { align, label },
                 ) => (
-                  <TableCell className={classes.header} align={align}>{label}</TableCell>
+                  // eslint-disable-next-line max-len
+                  <TableCell style={{ color: 'grey' }} className={classes.header} align={align}>{label}</TableCell>
                 ))
               }
 
