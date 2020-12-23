@@ -1,8 +1,7 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { Grid, Button, withStyles } from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 import moment from 'moment';
 import { AddDialog } from './components/AddDialog';
 import trainees from './data/trainee';
@@ -21,15 +20,10 @@ class TraineeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      selected: '',
       open: false,
       orderBy: '',
       order: '',
     };
-  }
-
-  getDateFormatted = (date) => {
-    moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
   }
 
   handleClickOpen = () => {
@@ -48,29 +42,35 @@ class TraineeList extends React.Component {
     }, () => console.log(data));
   }
 
-  handleSort = (field) => {
+  handleSort = (field) => (event) => {
     const { order } = this.state;
+    console.log(event);
     this.setState({
       orderBy: field,
       order: order === 'asc' ? 'desc' : 'asc',
     });
   }
 
-  handleSelect = (event, data) => {
-    this.setState({ selected: event.target.value }, () => console.log(data));
+  handleSelect = (event) => {
+    console.log(event);
   }
+
+  getDateFormatted = (date) => {
+    moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
+  };
 
   render() {
     const { open, orderBy, order } = this.state;
-    const { match: { url }, classes } = this.props;
+    const { classes } = this.props;
     return (
       <>
         <div className={classes.root}>
-          <Grid container direction="row" justify="flex-end" alignItems="flex-end">
+          <div className={classes.dialog}>
             <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
               ADD TRAINEELIST
             </Button>
-          </Grid>
+            <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
+          </div>
           <Table1
             id="id"
             data={trainees}
@@ -98,23 +98,12 @@ class TraineeList extends React.Component {
             onSort={this.handleSort}
             onSelect={this.handleSelect}
           />
-          <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
-          <ul>
-            {trainees.map(({ name, id }) => (
-              <li key={id}>
-                <Link to={`${url}/${id}`}>
-                  {name}
-                </Link>
-              </li>
-            ))}
-          </ul>
         </div>
       </>
     );
   }
 }
 TraineeList.propTypes = {
-  match: PropTypes.objectOf(PropTypes.object).isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 export default withStyles(useStyles)(TraineeList);
