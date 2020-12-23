@@ -1,156 +1,138 @@
-<!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Page</title>
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="http://yui.yahooapis.com/3.18.1/build/cssreset/cssreset-min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="../css/style.css">
+
 </head>
 
-<body class="background">
+<body>
     <div class="container">
-        <div class="upper">
-            <div class="checkout">Checkout</div>
-            <div class="path">
+        <div class="first-flex-container">
+            <div class="flex-item item1">
+                <b>Checkout</b>
+            </div>
+            <div class="item2">
                 <ul class="breadcrumb">
-                    <li class="Shipping">Shipping</li>
-                    <li class="bold">Payment method</li>
-                    <li class="confirmation">Confirmation</li>
+                    <li>Shipping</li>
+                    <li><b>Payment method</b></li>
+                    <li>Confirmation</li>
                 </ul>
             </div>
-            <div>
-                <i class="fa fa-close icon"></i>
-            </div>
+            <div><i class="fa fa-window-close close"></i></div>
         </div>
-        <div class="lower">
-            <div class="lower--left">
-                <div class="lower--left--up">
-                    <div class="Wallet">Wallet</div>
-                    <div class="lower--left--up-cards">
-                        <div>
-                            <img class="lower--left--up--cards--dis" src='../images/cards/discover.png' alt="Discover Card">
-                            <p class="cardStatement">Ending with 8899</p>
+        <div class="second-flex-container">
+            <div class="payment">
+                <div class="wallet">
+                    <b>Wallet</b>
+                    <hr>
+                    <div class="image">
+                        <div class="co_image">
+                            <img src="./images/cards/discover.png" class="co_img" title="Discover Card"
+                                alt="Discover card image" /> Ending with 8899
                         </div>
-                        <div>
-                            <img class="lower--left--up--cards--master" src='../images/cards/mastercard.png' alt="Master Card">
-                            <p class="cardStatement">Ending with 8899</p>
+                        <div class="co_image">
+                            <img src="images/cards/mastercard.png" class="co_img glow" title="Master Card" /> Ending
+                            with 8899
                         </div>
-                        <div>
-                            <img class="lower--left--up--cards--visa" src='../images/cards/visa.png' alt="Visa Card">
-                            <p class="cardStatement">Ending with 8899</p>
+                        <div class="co_image">
+                            <img src="images/cards/visa.png" class="co_img" title="Visa Card" /> Ending with 8899
                         </div>
                     </div>
-                </div>
-                <div class="lower-left-down1">
-                    <div class="NewCard"> New Card</div>
-                    <form class="lower-left-down">
-                        <input type="text" placeholder="Name on Card"><br>
-                        <input type="text" placeholder="XXXX-XXXX-XXXX-XXXX"><br>
-                        <input type="text" placeholder="MM/YY">
-                        <input type="text" placeholder="CVV"><br>
-                        <input type="submit" value="CONTINUE">
-                    </form>
+                    <div class="newcard">
+                        <br></br><b>New Card</b>
+                        <hr>
+                        <form>
+                            <input type="text" id="name" placeholder="Name on Card"><br></br>
+                            <input type="text" id="acc" placeholder="xxxx-xxxx-xxxx-xxxx"><br></br>
+                            <input type="text" id="exp" placeholder="MM-YY">
+                            <input type="text" id="cvv" placeholder="CVV"><br></br>
+                            <button class="button">CONTINUE</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
-
-            <div class="lower--right">
-                <div class="lower--right--items--box">
-                    <div class="lower-right-img">
-                        <img class="lower--right--image" src="../images/products/mobile-holder.jpg" alt="Mobile Holder image is not found">
+            <div class='item4 background'>
+                <div class="first">
+                    <div class="item">
+                        <div class="co_item">
+                            <img class='item_image' src="./images/products/mobile-holder.jpg">
+                        </div>
+                        <div class="amt">
+                            <div>
+                                <b> Mobile Holder</b><br><br></div>
+                            <div class="buy"> <i>Black</i>
+                                <br>Quantity:1
+                            </div>
+                        </div>
+                        <div class="price"> $10.00</div>
                     </div>
-                    <div class="lower--right--details">
-                        <p class="lower--right--product">Mobile Holder</p><br>
-                        <p class="lower--right--itemColor">Black</p>
-                        <p class="lower--right--quantity">Quantity: 1</p>
+                    <hr>
+                    <div class="item">
+                        <div class="co_item"><img class='item_image' src="./images/products/usb-c-2-micro.jpeg"></div>
+                        <div class="amt">
+                            <div>
+                                <b>C-Type to micro Convertor</b><br><br></div>
+                            <div class="buy"> <i>Black</i>
+                                <br>Quantity:1
+                            </div>
+                        </div>
+                        <div class="price">$10.00</div>
                     </div>
+                    <hr>
+                    <div class="item">
+                        <div class="co_item">
+                            <img class='item_image' src="./images/products/hard-case.jpg"></div>
+                        <div class="amt">
+                            <div>
+                                <b>Mobile Case</b><br><br> </div>
+                            <div class="buy"><i> Black</i>
+                                <br>Quantity:1
+                            </div>
+                        </div>
+                        <div class="price">$10.00</div>
 
-                    <div class="lower--right--value">
-                        <p>$ 10.00</p>
+                    </div>
+                    <hr>
+                    <div class="item">
+                        <div class="co_item">
+                            <img class='item_image' src="./images/products/rado.jpg"></div>
+                        <div class="amt">
+                            <div>
+                                <b>Rado Watch</b><br><br> </div>
+                            <div class="buy"><i> Black</i>
+                                <br>Quantity:1
+                            </div>
+                        </div>
+                        <div class="price">$10.00</div><br><br>
                     </div>
                 </div>
-
-                <hr>
-
-                <div class="lower--right--items--box">
-                    <div class="lower-right-img">
-                        <img class="lower--right--image" src="../images/products/rado.jpg" alt="Rado Watch">
-                    </div>
-                    <div class="lower--right--details">
-                        <p class="lower--right--product">Rado Watch</p><br>
-                        <p class="lower--right--itemColor">Black</p>
-                        <p class="lower--right--quantity">Quantity: 1</p>
-                    </div>
-                    <div class="lower--right--value">
-                        <p>$ 10.00</p>
-                    </div>
-                </div>
-                <hr>
-                <div class="lower--right--items--box">
-                    <div class="lower-right-img">
-                        <img class="lower--right--image" src="../images/products/usb-c-2-micro.jpeg" alt="C Type to Micro Converter">
-                    </div>
-                    <div class="lower--right--details">
-                        <p class="lower--right--product">C Type to Micro Converter</p><br>
-                        <p class="lower--right--itemColor">Black</p>
-                        <p class="lower--right--quantity">Quantity: 1</p>
-                    </div>
-                    <div class="lower--right--value">
-                        <p>$ 10.00</p>
-                    </div>
-                </div>
-                <hr>
-                <div class="lower--right--items--box">
-                    <div class="lower-right-img">
-                        <img class="lower--right--image1" src="../images/products/hard-case.jpg" alt="Mobile Case">
-                    </div>
-                    <div class="lower--right--details">
-                        <p class="lower--right--product">Mobile Case</p><br>
-                        <p class="lower--right--itemColor">Black</p>
-                        <p class="lower--right--quantity">Quantity: 1</p>
-                    </div>
-                    <div class="lower--right--value">
-                        <p>$ 10.00</p>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <br>
-                <br>
-                <div class="lower-right-tt">
-                    <div class="lower--right--prices-subtotal">
-                        <p>Sub Total</p>
+                <div class='second'>
+                    <hr>
+                    <div class="summary">
                         <div>
-                            <p>$ 100.00</p>
+                            Sub Total <br><br> Shipping<br><br> Taxes<br>
+                        </div>
+                        <div class="price">
+                            $ 100.00 <br><br> $ 10.00<br> <br> $ 5.00
                         </div>
                     </div>
-                    <br>
-                    <div class="lower--right--prices">
+                    <hr>
+                    <div class="summary">
                         <div>
-                            <p>Shipping</p>
-                        </div>
-                        <div>
-                            <p>$ 50.00</p>
-                        </div>
-                    </div>
-                    <br>
-                    <div class="lower--right--prices">
-                        <div class="taxes">
-                            <p>Taxes</p>
-                        </div>
-                        <div>
-                            <p>$ 5.00</p>
-                        </div>
-                    </div>
-                    <div class="lower--right--total">
-                        <p class="lower--right--total--price">Total</p>
-                        <div class="lower--right--price">
-                            <p>$ 115.00</p>
+                            <b>Total</b></div>
+                        <div class="price">
+                            <b> $ 115.00 </b>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 </body>
 
 </html>
