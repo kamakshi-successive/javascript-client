@@ -38,13 +38,14 @@ function Table1(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map(({ name, email }) => (
+            {data.map(({ name, email, createdAt }) => (
               <TableRow>
                 <TableCell align={column[0].align}>
                   {' '}
                   {name}
                 </TableCell>
                 <TableCell>{email}</TableCell>
+                <TableCell>{createdAt}</TableCell>
 
               </TableRow>
             ))}

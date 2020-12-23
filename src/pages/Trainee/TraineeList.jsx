@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { Button, withStyles } from '@material-ui/core';
+import moment from 'moment';
 import { AddDialog } from './components/AddDialog';
 import trainees from './data/trainee';
 import { Table1 } from '../../components';
@@ -21,6 +22,10 @@ class TraineeList extends React.Component {
     this.state = {
       open: false,
     };
+  }
+
+  getDateFormatted = (date) => {
+    moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
   }
 
   handleClickOpen = () => {
@@ -64,8 +69,18 @@ class TraineeList extends React.Component {
                 field: 'email',
                 label: 'Email Address',
               },
+              {
+                field: 'createdAt',
+                label: 'Date',
+                align: 'right',
+                format: this.getDateFormatted,
+              },
 
             ]}
+            // orderBy={orderBy}
+            // order={order}
+            // onSort={this.handleSort}
+            // onSelect={this.handleSelect}
           />
           <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
           <ul>
