@@ -10,24 +10,6 @@ export default function CustomTextField(props) {
   const Icon = icons;
   return (
     <>
-      {/* <TextField
-        id="outlined-required"
-        label={label}
-        variant="outlined"
-        fullWidth
-        onChange={onChange}
-        onBlur={onBlur}
-        InputProps={{
-          startAdornment: (
-            <InputAdornment position="start">
-              <Icon />
-            </InputAdornment>
-          ),
-        }}
-        helperText={helperText}
-        error={error}
-        type={type}
-      /> */}
       <TextField
         id="outlined-full-width"
         label={label}

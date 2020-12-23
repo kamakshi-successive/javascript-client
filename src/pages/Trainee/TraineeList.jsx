@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, withStyles } from '@material-ui/core';
+import { Grid, Button, withStyles } from '@material-ui/core';
 import { AddDialog } from './components/AddDialog';
 import trainees from './data/trainee';
+import { Table1 } from '../../components';
 
 const useStyles = (theme) => ({
   root: {
@@ -47,9 +48,27 @@ class TraineeList extends React.Component {
     return (
       <>
         <div className={classes.root}>
-          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-            ADD TRAINEELIST
-          </Button>
+          <Grid container direction="row" justify="flex-end" alignItems="flex-end">
+            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+              ADD TRAINEELIST
+            </Button>
+          </Grid>
+          <Table1
+            id="id"
+            data={trainees}
+            column={[
+              {
+                field: 'name',
+                label: 'Name',
+                align: 'center',
+              },
+              {
+                field: 'email',
+                label: 'Email Address',
+              },
+
+            ]}
+          />
           <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
           <ul>
             {trainees.map(({ name, id }) => (
