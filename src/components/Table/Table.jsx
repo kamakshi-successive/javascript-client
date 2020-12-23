@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -7,6 +8,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles({
@@ -19,22 +21,32 @@ const useStyles = makeStyles({
 });
 
 function Table1(props) {
+  const classes = useStyles();
   const {
-    classes, column, data,
+    column, data, onSelect, onSort, order, orderBy,
   } = props;
   return (
     <>
       <TableContainer component={Paper}>
         <Table className={classes.table}>
           <TableHead>
-            <TableRow>
+            <TableRow hover>
               {
                 column.map((
-                  { align, label },
+                  { align, label, field },
                 ) => (
-                  <TableCell className={classes.header} align={align}>{label}</TableCell>
+                  <TableCell className={classes.header} align={align}>
+                    <TableSortLabel
+                      align={align}
+                      active={orderBy === field ? order : 'asc'}
+                      onClick={onSort(field)}
+                    >
+                      {label}
+                    </TableSortLabel>
+                  </TableCell>
                 ))
               }
+
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,7 +57,7 @@ function Table1(props) {
                   {name}
                 </TableCell>
                 <TableCell>{email}</TableCell>
-                <TableCell>{createdAt}</TableCell>
+                <TableCell align={column[2].align}>{createdAt}</TableCell>
 
               </TableRow>
             ))}
@@ -56,9 +68,15 @@ function Table1(props) {
   );
 }
 Table1.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
   column: PropTypes.arrayOf(PropTypes.object).isRequired,
   data: PropTypes.arrayOf(PropTypes.object).isRequired,
+  order: PropTypes.oneOf(['asc', 'desc']),
+  onSelect: PropTypes.func.isRequired,
+  onSort: PropTypes.func.isRequired,
+};
+
+Table1.defaultProps = {
+  order: 'asc',
 };
 
 export default withStyles(useStyles)(Table1);

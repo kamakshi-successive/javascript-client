@@ -1,7 +1,8 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { Button, withStyles } from '@material-ui/core';
+import { Grid, Button, withStyles } from '@material-ui/core';
 import moment from 'moment';
 import { AddDialog } from './components/AddDialog';
 import trainees from './data/trainee';
@@ -20,7 +21,10 @@ class TraineeList extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      selected: '',
       open: false,
+      orderBy: '',
+      order: '',
     };
   }
 
@@ -39,23 +43,34 @@ class TraineeList extends React.Component {
   };
 
   handleSubmit = (data) => {
-    this.setState({
+    this.settate({
       open: false,
-    }, () => {
-      // eslint-disable-next-line no-console
-      console.log(data);
+    }, () => console.log(data));
+  }
+
+  handleSort = (field) => {
+    const { order } = this.state;
+    this.setState({
+      orderBy: field,
+      order: order === 'asc' ? 'desc' : 'asc',
     });
   }
 
+  handleSelect = (event, data) => {
+    this.setState({ selected: event.target.value }, () => console.log(data));
+  }
+
   render() {
-    const { open } = this.state;
+    const { open, orderBy, order } = this.state;
     const { match: { url }, classes } = this.props;
     return (
       <>
         <div className={classes.root}>
-          <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-            ADD TRAINEELIST
-          </Button>
+          <Grid container direction="row" justify="flex-end" alignItems="flex-end">
+            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+              ADD TRAINEELIST
+            </Button>
+          </Grid>
           <Table1
             id="id"
             data={trainees}
@@ -68,6 +83,7 @@ class TraineeList extends React.Component {
               {
                 field: 'email',
                 label: 'Email Address',
+                format: (value) => value && value.toUpperCase(),
               },
               {
                 field: 'createdAt',
@@ -77,10 +93,10 @@ class TraineeList extends React.Component {
               },
 
             ]}
-            // orderBy={orderBy}
-            // order={order}
-            // onSort={this.handleSort}
-            // onSelect={this.handleSelect}
+            orderBy={orderBy}
+            order={order}
+            onSort={this.handleSort}
+            onSelect={this.handleSelect}
           />
           <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
           <ul>
