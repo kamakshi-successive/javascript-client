@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Toolbar, AppBar, makeStyles, Typography, Button,
 } from '@material-ui/core';
-// import { func } from 'prop-types';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,11 +25,11 @@ function Navbar() {
           <Typography variant="h6" className={classes.title}>
             Trainee Portal
           </Typography>
-          <Button color="inherit">TRAINEE</Button>
-          <Button color="inherit">TEXTFIELD DEMO</Button>
-          <Button color="inherit">INPUT DEMO</Button>
-          <Button color="inherit">CHILDREN DEMO</Button>
-          <Button color="inherit">LOGOUT</Button>
+          <Button component={Link} to="/Trainee" color="inherit">TRAINEE</Button>
+          <Button component={Link} to="/TextFieldDemo" color="inherit">TEXTFIELD DEMO</Button>
+          <Button component={Link} to="/InputDemo" color="inherit">INPUT DEMO</Button>
+          <Button component={Link} to="/CalculatorDemo" color="inherit">CHILDREN DEMO</Button>
+          <Button color="inherit" style={{ marginLeft: 30 }}>LOGOUT</Button>
         </Toolbar>
       </AppBar>
     </div>
