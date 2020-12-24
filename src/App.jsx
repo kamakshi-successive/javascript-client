@@ -21,7 +21,7 @@ function App() {
       <Router>
         <Switch>
           <Route exact path="/">
-            <Redirect to="/Trainee" />
+            <Redirect to="/trainee" />
           </Route>
           <AuthRoute path="/login" component={Login} />
           <PrivateRoute path="/CalculatorDemo" component={CalculatorDemo} />
