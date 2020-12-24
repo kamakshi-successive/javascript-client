@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { TextField, InputAdornment } from '@material-ui/core';
-
+import { InputAdornment } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
+// import PersonIcon from '@material-ui/icons'
 export default function CustomTextField(props) {
   const {
     error, helperText, onChange, onBlur, label, type, icons,
@@ -10,13 +11,20 @@ export default function CustomTextField(props) {
   return (
     <>
       <TextField
-        required
-        id="outlined-required"
+        id="outlined-full-width"
         label={label}
-        variant="outlined"
+        autoComplete="off"
         fullWidth
-        onChange={onChange}
+        error={error}
+        helperText={helperText}
         onBlur={onBlur}
+        onChange={onChange}
+        placeholder=""
+        margin="normal"
+        type={type}
+        InputLabelProps={{
+          shrink: true,
+        }}
         InputProps={{
           startAdornment: (
             <InputAdornment position="start">
@@ -24,9 +32,7 @@ export default function CustomTextField(props) {
             </InputAdornment>
           ),
         }}
-        helperText={helperText}
-        error={error}
-        type={type}
+        variant="outlined"
       />
     </>
   );

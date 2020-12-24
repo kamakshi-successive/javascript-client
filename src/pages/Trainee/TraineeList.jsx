@@ -55,9 +55,7 @@ class TraineeList extends React.Component {
     console.log(event);
   }
 
-  // getDateFormatted = (date) => {
-  //   moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
-  // };
+  getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
   render() {
     const { open, orderBy, order } = this.state;
