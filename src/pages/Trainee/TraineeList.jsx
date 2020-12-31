@@ -1,13 +1,14 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, withStyles } from '@material-ui/core';
+import { Button, SnackbarContent, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { Table1 } from '../../components';
 import trainees from './data/trainee';
+import { SnackBarContext } from '../../contexts';
 
 const useStyles = (theme) => ({
   root: {
@@ -121,78 +122,90 @@ class TraineeList extends React.Component {
     } = this.state;
     const { classes } = this.props;
     return (
-      <>
-        <div className={classes.root}>
-          <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-              ADD TRAINEELIST
-            </Button>
-            <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
-          </div>
+      <SnackbarContent>
+        {(openSnackBar) => (
+          <>
+            <div className={classes.root}>
+              <div className={classes.dialog}>
+                <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                  ADD TRAINEELIST
+                </Button>
+                <AddDialog
+                  open={open}
+                  onClose={this.handleClose}
+                  onSubmit={
+                    () => this.handleSubmit
+                  }
+                />
+              </div>
           &nbsp;
           &nbsp;
-          <EditDialog
-            Editopen={EditOpen}
-            handleEditClose={this.handleEditClose}
-            handleEdit={this.handleEdit}
-            data={editData}
-          />
-          <br />
-          <DeleteDialog
-            openRemove={RemoveOpen}
-            onClose={this.handleRemoveClose}
-            remove={this.handleRemove}
-          />
-          <br />
-          <br />
-          <Table1
-            id="id"
-            data={trainees}
-            column={
-              [
-                {
-                  field: 'name',
-                  label: 'Name',
-                },
-                {
-                  field: 'email',
-                  label: 'Email Address',
-                  format: (value) => value && value.toUpperCase(),
-                },
-                {
-                  field: 'createdAt',
-                  label: 'Date',
-                  align: 'right',
-                  format: this.getDateFormatted,
-                },
-              ]
-            }
-            actions={[
-              {
-                icon: <EditIcon />,
-                handler: this.handleEditDialogOpen,
+              <EditDialog
+                Editopen={EditOpen}
+                handleEditClose={this.handleEditClose}
+                handleEdit={this.handleEdit}
+                data={editData}
+              />
+              <br />
+              <DeleteDialog
+                openRemove={RemoveOpen}
+                onClose={this.handleRemoveClose}
+                remove={this.handleRemove}
+              />
+              <br />
+              <br />
+              <Table1
+                id="id"
+                data={trainees}
+                column={
+                  [
+                    {
+                      field: 'name',
+                      label: 'Name',
+                    },
+                    {
+                      field: 'email',
+                      label: 'Email Address',
+                      format: (value) => value && value.toUpperCase(),
+                    },
+                    {
+                      field: 'createdAt',
+                      label: 'Date',
+                      align: 'right',
+                      format: this.getDateFormatted,
+                    },
+                  ]
+                }
+                actions={[
+                  {
+                    icon: <EditIcon />,
+                    handler: this.handleEditDialogOpen,
 
-              },
-              {
-                icon: <DeleteIcon />,
-                handler: this.handleRemoveDialogOpen,
-              },
-            ]}
-            onSort={this.handleSort}
-            orderBy={orderBy}
-            order={order}
-            onSelect={this.handleSelect}
-            count={100}
-            page={page}
-            onChangePage={this.handleChangePage}
-            rowsPerPage={rowsPerPage}
-          />
-        </div>
-      </>
+                  },
+                  {
+                    icon: <DeleteIcon />,
+                    handler: this.handleRemoveDialogOpen,
+                  },
+                ]}
+                onSort={this.handleSort}
+                orderBy={orderBy}
+                order={order}
+                onSelect={this.handleSelect}
+                count={100}
+                page={page}
+                onChangePage={this.handleChangePage}
+                rowsPerPage={rowsPerPage}
+              />
+            </div>
+          </>
+        )}
+      </SnackbarContent>
     );
   }
 }
+
 TraineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
+
 export default withStyles(useStyles)(TraineeList);

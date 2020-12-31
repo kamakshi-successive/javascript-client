@@ -1,0 +1,59 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core';
+import CustomSnackBar from './SnackBar';
+
+export const SnackbarContext = React.createContext(() => console.log('Default method triggers'));
+
+const styles = (theme) => ({
+  close: {
+    padding: theme.spacing.unit / 2,
+  },
+});
+class SnackBarProvider extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      showSnackBar: false,
+      message: '',
+      variant: '',
+    };
+  }
+
+    openSnackBar = (message, variant) => {
+      this.setState({
+        showSnackBar: true,
+        variant,
+        message,
+      });
+    }
+
+    closeSnackBar = () => {
+      this.setState({
+        showSnackBar: false,
+      });
+    }
+
+    render() {
+      const { children } = this.props;
+      const { showSnackBar, message, variant } = this.state;
+      return (
+        <>
+          <SnackbarContext.Provider value={this.openSnackBar}>
+            {children}
+          </SnackbarContext.Provider>
+          <CustomSnackBar
+            variant={variant}
+            message={message}
+            open={showSnackBar}
+            onClose={this.closeSnackBar}
+          />
+        </>
+      );
+    }
+}
+SnackBarProvider.propTypes = {
+  children: PropTypes.node.isRequired,
+};
+
+export default withStyles(styles)(SnackBarProvider);
