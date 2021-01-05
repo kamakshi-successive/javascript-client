@@ -41,19 +41,25 @@ class SnackBarProvider extends Component {
       const { showSnackBar, message, variant } = this.state;
       return (
         <>
-          <SnackbarContext.Provider value={this.openSnackBar}>
-            {children}
-          </SnackbarContext.Provider>
-          <CustomSnackBar
-            variant={variant}
-            message={message}
-            open={showSnackBar}
-            onClose={this.closeSnackBar}
-          />
+          <div>
+            <SnackbarContext.Provider value={{
+              openSnackBar: this.openSnackBar,
+            }}
+            >
+              {children}
+            </SnackbarContext.Provider>
+            <CustomSnackBar
+              variant={variant}
+              message={message}
+              open={showSnackBar}
+              onClose={this.closeSnackBar}
+            />
+          </div>
         </>
       );
     }
 }
+
 SnackBarProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

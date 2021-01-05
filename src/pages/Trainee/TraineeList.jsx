@@ -45,12 +45,12 @@ class TraineeList extends React.Component {
     return open;
   };
 
-  handleSubmit = (data, openSnackBar) => {
-    openSnackBar('edit succ');
+  handleSubmit = (openSnackBar) => {
+    openSnackBar('User Data Edited Successfully');
     this.setState({
       open: false,
     }, () => {
-      console.log('Data :', data);
+      // console.log('Data :', data);
     });
   }
 
@@ -88,7 +88,7 @@ class TraineeList extends React.Component {
   };
 
   handleRemove = (openSnackBar) => {
-    openSnackBar('deleted');
+    openSnackBar('User Data Deleted Successfully');
     const { deleteData } = this.state;
     this.setState({
       RemoveOpen: false,
@@ -109,12 +109,12 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (name, email, openSnackBar) => {
-    openSnackBar('updated');
+  handleEdit = (openSnackBar) => {
+    openSnackBar('User Data Updated Successfully');
     this.setState({
       EditOpen: false,
     });
-    console.log('Edited Item ', { name, email });
+    // console.log('Edited Item ', { name, email });
   };
 
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
@@ -126,7 +126,7 @@ class TraineeList extends React.Component {
     const { classes } = this.props;
     return (
       <SnackbarContext.Consumer>
-        {(openSnackBar) => (
+        {({ openSnackBar }) => (
           <>
             <div className={classes.root}>
               <div className={classes.dialog}>
@@ -146,14 +146,14 @@ class TraineeList extends React.Component {
               <EditDialog
                 Editopen={EditOpen}
                 handleEditClose={this.handleEditClose}
-                handleEdit={this.handleEdit(openSnackBar)}
+                handleEdit={() => this.handleEdit(openSnackBar)}
                 data={editData}
               />
               <br />
               <DeleteDialog
                 openRemove={RemoveOpen}
                 onClose={this.handleRemoveClose}
-                remove={this.handleRemove(openSnackBar)}
+                remove={() => this.handleRemove(openSnackBar)}
               />
               <br />
               <br />
