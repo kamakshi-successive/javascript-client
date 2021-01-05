@@ -14,7 +14,7 @@ import {
   Trainee,
 } from './pages';
 import { AuthRoute, PrivateRoute } from './routes/index';
-import SnackBarProvider from './contexts';
+import { SnackBarProvider } from './contexts';
 
 function App() {
   return (

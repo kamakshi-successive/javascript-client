@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, SnackbarContent, withStyles } from '@material-ui/core';
+import { Button, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { Table1 } from '../../components';
 import trainees from './data/trainee';
-import { SnackBarContext } from '../../contexts';
+import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
 const useStyles = (theme) => ({
   root: {
@@ -45,7 +45,8 @@ class TraineeList extends React.Component {
     return open;
   };
 
-  handleSubmit = (data) => {
+  handleSubmit = (data, openSnackBar) => {
+    openSnackBar('edit succ');
     this.setState({
       open: false,
     }, () => {
@@ -86,7 +87,8 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleRemove = () => {
+  handleRemove = (openSnackBar) => {
+    openSnackBar('deleted');
     const { deleteData } = this.state;
     this.setState({
       RemoveOpen: false,
@@ -107,7 +109,8 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (name, email) => {
+  handleEdit = (name, email, openSnackBar) => {
+    openSnackBar('updated');
     this.setState({
       EditOpen: false,
     });
@@ -122,7 +125,7 @@ class TraineeList extends React.Component {
     } = this.state;
     const { classes } = this.props;
     return (
-      <SnackbarContent>
+      <SnackbarContext.Consumer>
         {(openSnackBar) => (
           <>
             <div className={classes.root}>
@@ -134,7 +137,7 @@ class TraineeList extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                   onSubmit={
-                    () => this.handleSubmit
+                    () => this.handleSubmit(openSnackBar)
                   }
                 />
               </div>
@@ -143,14 +146,14 @@ class TraineeList extends React.Component {
               <EditDialog
                 Editopen={EditOpen}
                 handleEditClose={this.handleEditClose}
-                handleEdit={this.handleEdit}
+                handleEdit={this.handleEdit(openSnackBar)}
                 data={editData}
               />
               <br />
               <DeleteDialog
                 openRemove={RemoveOpen}
                 onClose={this.handleRemoveClose}
-                remove={this.handleRemove}
+                remove={this.handleRemove(openSnackBar)}
               />
               <br />
               <br />
@@ -199,7 +202,7 @@ class TraineeList extends React.Component {
             </div>
           </>
         )}
-      </SnackbarContent>
+      </SnackbarContext.Consumer>
     );
   }
 }

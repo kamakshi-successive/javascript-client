@@ -1,15 +1,17 @@
+/* eslint-disable no-console */
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core';
 import CustomSnackBar from './SnackBar';
 
-export const SnackbarContext = React.createContext(() => console.log('Default method triggers'));
+const SnackbarContext = React.createContext(() => console.log('Default method triggers'));
 
 const styles = (theme) => ({
   close: {
     padding: theme.spacing.unit / 2,
   },
 });
+
 class SnackBarProvider extends Component {
   constructor(props) {
     super(props);
@@ -57,3 +59,4 @@ SnackBarProvider.propTypes = {
 };
 
 export default withStyles(styles)(SnackBarProvider);
+export { SnackbarContext };
