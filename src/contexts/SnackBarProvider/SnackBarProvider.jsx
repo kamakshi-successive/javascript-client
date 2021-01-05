@@ -54,6 +54,7 @@ class SnackBarProvider extends Component {
       );
     }
 }
+
 SnackBarProvider.propTypes = {
   children: PropTypes.node.isRequired,
 };

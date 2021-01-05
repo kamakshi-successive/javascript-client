@@ -109,12 +109,12 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (name, email, openSnackBar) => {
+  handleEdit = (openSnackBar) => {
     openSnackBar('updated');
     this.setState({
       EditOpen: false,
     });
-    console.log('Edited Item ', { name, email });
+    // console.log('Edited Item ', { name, email });
   };
 
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
