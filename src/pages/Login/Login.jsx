@@ -6,6 +6,12 @@ import {
   CardContent, withStyles, InputAdornment, Button,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
+import { Redirect } from 'react-router-dom';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@material-ui/core/Box';
+import ls from 'local-storage';
+import callApi from '../../libs/utils/api';
+import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
 const Design = (theme) => ({
   icon: {
@@ -19,6 +25,7 @@ const Design = (theme) => ({
     marginLeft: theme.spacing(58),
   },
 });
+
 class Login extends React.Component {
 schema = yup.object().shape({
   email: yup.string()
