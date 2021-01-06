@@ -46,7 +46,7 @@ class TraineeList extends React.Component {
   };
 
   handleSubmit = (openSnackBar, data) => {
-    openSnackBar('User Data Edit Successfully', 'success');
+    openSnackBar('User Data Added Successfully', 'success');
     this.setState({
       open: false,
     }, () => {
