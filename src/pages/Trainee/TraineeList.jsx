@@ -8,6 +8,7 @@ import moment from 'moment';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { Table1 } from '../../components';
 import trainees from './data/trainee';
+import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
 const useStyles = (theme) => ({
   root: {
@@ -44,7 +45,8 @@ class TraineeList extends React.Component {
     return open;
   };
 
-  handleSubmit = (data) => {
+  handleSubmit = (openSnackBar, data) => {
+    openSnackBar('User Data Added Successfully', 'success');
     this.setState({
       open: false,
     }, () => {
@@ -52,8 +54,8 @@ class TraineeList extends React.Component {
     });
   }
 
-  handleSelect = (event) => {
-    console.log(event);
+  handleSelect = () => {
+    // console.log(event);
   };
 
   handleSort = (field) => (event) => {
@@ -85,12 +87,17 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleRemove = () => {
+  handleRemove = (openSnackBar) => {
     const { deleteData } = this.state;
+    if (deleteData.createdAt >= '2019-02-14') {
+      openSnackBar('User Data Deleted Successfully', 'success');
+      console.log('Deleted Item ', deleteData);
+    } else {
+      openSnackBar('Cannot Delete User Data Successfully', 'error');
+    }
     this.setState({
       RemoveOpen: false,
     });
-    console.log('Deleted Item ', deleteData);
   };
 
   handleEditDialogOpen = (element) => () => {
@@ -106,7 +113,8 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (name, email) => {
+  handleEdit = (openSnackBar, name, email) => {
+    openSnackBar('User Data Updated Successfully', 'success');
     this.setState({
       EditOpen: false,
     });
@@ -121,78 +129,90 @@ class TraineeList extends React.Component {
     } = this.state;
     const { classes } = this.props;
     return (
-      <>
-        <div className={classes.root}>
-          <div className={classes.dialog}>
-            <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
-              ADD TRAINEELIST
-            </Button>
-            <AddDialog open={open} onClose={this.handleClose} onSubmit={() => this.handleSubmit} />
-          </div>
+      <SnackbarContext.Consumer>
+        {({ openSnackBar }) => (
+          <>
+            <div className={classes.root}>
+              <div className={classes.dialog}>
+                <Button variant="outlined" color="primary" onClick={this.handleClickOpen}>
+                  ADD TRAINEELIST
+                </Button>
+                <AddDialog
+                  open={open}
+                  onClose={this.handleClose}
+                  onSubmit={
+                    (data) => this.handleSubmit(openSnackBar, data)
+                  }
+                />
+              </div>
           &nbsp;
           &nbsp;
-          <EditDialog
-            Editopen={EditOpen}
-            handleEditClose={this.handleEditClose}
-            handleEdit={this.handleEdit}
-            data={editData}
-          />
-          <br />
-          <DeleteDialog
-            openRemove={RemoveOpen}
-            onClose={this.handleRemoveClose}
-            remove={this.handleRemove}
-          />
-          <br />
-          <br />
-          <Table1
-            id="id"
-            data={trainees}
-            column={
-              [
-                {
-                  field: 'name',
-                  label: 'Name',
-                },
-                {
-                  field: 'email',
-                  label: 'Email Address',
-                  format: (value) => value && value.toUpperCase(),
-                },
-                {
-                  field: 'createdAt',
-                  label: 'Date',
-                  align: 'right',
-                  format: this.getDateFormatted,
-                },
-              ]
-            }
-            actions={[
-              {
-                icon: <EditIcon />,
-                handler: this.handleEditDialogOpen,
+              <EditDialog
+                Editopen={EditOpen}
+                handleEditClose={this.handleEditClose}
+                handleEdit={(name, email) => this.handleEdit(openSnackBar, name, email)}
+                data={editData}
+              />
+              <br />
+              <DeleteDialog
+                openRemove={RemoveOpen}
+                onClose={this.handleRemoveClose}
+                remove={(deleteData) => this.handleRemove(openSnackBar, deleteData)}
+              />
+              <br />
+              <br />
+              <Table1
+                id="id"
+                data={trainees}
+                column={
+                  [
+                    {
+                      field: 'name',
+                      label: 'Name',
+                    },
+                    {
+                      field: 'email',
+                      label: 'Email Address',
+                      format: (value) => value && value.toUpperCase(),
+                    },
+                    {
+                      field: 'createdAt',
+                      label: 'Date',
+                      align: 'right',
+                      format: this.getDateFormatted,
+                    },
+                  ]
+                }
+                actions={[
+                  {
+                    icon: <EditIcon />,
+                    handler: this.handleEditDialogOpen,
 
-              },
-              {
-                icon: <DeleteIcon />,
-                handler: this.handleRemoveDialogOpen,
-              },
-            ]}
-            onSort={this.handleSort}
-            orderBy={orderBy}
-            order={order}
-            onSelect={this.handleSelect}
-            count={100}
-            page={page}
-            onChangePage={this.handleChangePage}
-            rowsPerPage={rowsPerPage}
-          />
-        </div>
-      </>
+                  },
+                  {
+                    icon: <DeleteIcon />,
+                    handler: this.handleRemoveDialogOpen,
+                  },
+                ]}
+                onSort={this.handleSort}
+                orderBy={orderBy}
+                order={order}
+                onSelect={this.handleSelect}
+                count={100}
+                page={page}
+                onChangePage={this.handleChangePage}
+                rowsPerPage={rowsPerPage}
+              />
+            </div>
+          </>
+        )}
+      </SnackbarContext.Consumer>
     );
   }
 }
+
 TraineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
+
 export default withStyles(useStyles)(TraineeList);
