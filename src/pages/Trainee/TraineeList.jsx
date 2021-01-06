@@ -45,17 +45,17 @@ class TraineeList extends React.Component {
     return open;
   };
 
-  handleSubmit = (openSnackBar) => {
-    openSnackBar('User Data Edited Successfully');
+  handleSubmit = (openSnackBar, data) => {
+    openSnackBar('User Data Edited Successfully', 'success');
     this.setState({
       open: false,
     }, () => {
-      // console.log('Data :', data);
+      console.log('Data :', data);
     });
   }
 
-  handleSelect = (event) => {
-    console.log(event);
+  handleSelect = () => {
+    // console.log(event);
   };
 
   handleSort = (field) => (event) => {
@@ -88,12 +88,16 @@ class TraineeList extends React.Component {
   };
 
   handleRemove = (openSnackBar) => {
-    openSnackBar('User Data Deleted Successfully');
     const { deleteData } = this.state;
+    if (deleteData.createdAt >= '2019-02-14') {
+      openSnackBar('User Data Deleted Successfully', 'success');
+      console.log('Deleted Item ', deleteData);
+    } else {
+      openSnackBar('Cannot Delete User Data Successfully', 'error');
+    }
     this.setState({
       RemoveOpen: false,
     });
-    console.log('Deleted Item ', deleteData);
   };
 
   handleEditDialogOpen = (element) => () => {
@@ -109,12 +113,12 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (openSnackBar) => {
-    openSnackBar('User Data Updated Successfully');
+  handleEdit = (openSnackBar, name, email) => {
+    openSnackBar('User Data Updated Successfully', 'success');
     this.setState({
       EditOpen: false,
     });
-    // console.log('Edited Item ', { name, email });
+    console.log('Edited Item ', { name, email });
   };
 
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
@@ -137,7 +141,7 @@ class TraineeList extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                   onSubmit={
-                    () => this.handleSubmit(openSnackBar)
+                    (data) => this.handleSubmit(openSnackBar, data)
                   }
                 />
               </div>
@@ -146,14 +150,14 @@ class TraineeList extends React.Component {
               <EditDialog
                 Editopen={EditOpen}
                 handleEditClose={this.handleEditClose}
-                handleEdit={() => this.handleEdit(openSnackBar)}
+                handleEdit={(name, email) => this.handleEdit(openSnackBar, name, email)}
                 data={editData}
               />
               <br />
               <DeleteDialog
                 openRemove={RemoveOpen}
                 onClose={this.handleRemoveClose}
-                remove={() => this.handleRemove(openSnackBar)}
+                remove={(deleteData) => this.handleRemove(openSnackBar, deleteData)}
               />
               <br />
               <br />
