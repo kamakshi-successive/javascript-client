@@ -1,26 +1,12 @@
-/* eslint-disable consistent-return */
-/* eslint-disable no-console */
 import axios from 'axios';
-import ls from 'local-storage';
 
-const callApi = async (data, method, url) => {
+const callApi = async ({ Email, Password }) => {
   try {
-    const baseUrl = process.env.REACT_APP_BASE_URL + url;
-    const { email, password } = data;
-    const response = await axios({
-      method,
-      url: baseUrl,
-      data: {
-        email,
-        password,
-      },
-    });
-    ls.set('Token: ', response.data.data);
-    const token = ls.get('token');
-    console.log('Token:: ', token);
-  } catch (error) {
-    console.log('Inside Catch');
-    return { status: 'error', message: 'This is a error message' };
+    const response = await axios.post('http://localhost:9000/api/user/login', { email: Email, password: Password });
+    const { data: { data } } = response;
+    return data;
+  } catch (err) {
+    return err;
   }
 };
 
