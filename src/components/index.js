@@ -5,3 +5,4 @@ export { SelectField } from './SelectField';
 export { Button } from './Button';
 export { Text } from './Math';
 export { Table1 } from './Table';
+export { hoc } from './HOC';
