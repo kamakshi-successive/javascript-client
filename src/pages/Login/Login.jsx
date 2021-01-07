@@ -18,6 +18,7 @@ const schema = yup.object().shape({
   password: yup.string()
     .required('Password is required'),
 });
+
 const Design = (theme) => ({
   icon: {
     background: 'red',
@@ -26,8 +27,8 @@ const Design = (theme) => ({
   },
   main: {
     width: 400,
-    marginTop: theme.spacing(20),
-    marginLeft: theme.spacing(58),
+    marginTop: theme.spacing(10),
+    marginLeft: theme.spacing(48),
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
@@ -67,11 +68,12 @@ class Login extends React.Component {
         loading: true,
         hasError: true,
       });
+
       await callApi(data, 'post', '/user/login');
       this.setState({ loading: false });
       const response = localStorage.get('token');
-      console.log(' res inside login :', response.status);
-      if (response.status === 200) {
+      console.log(' res inside login :', response);
+      if (response!=null &&response.status === 'ok') {
         this.setState({
           redirect: true,
           hasError: false,
@@ -80,6 +82,7 @@ class Login extends React.Component {
           const { message } = this.state;
           openSnackBar(message, 'success');
         });
+        // history.push('/trainee');
       } else {
         this.setState({
           message: 'Login Failed, Record Not Found',
@@ -215,5 +218,7 @@ class Login extends React.Component {
 }
 Login.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  history: PropTypes.objectOf(PropTypes.any).isRequired,
 };
+
 export default withStyles(Design)(Login);
