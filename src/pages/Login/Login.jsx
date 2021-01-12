@@ -1,14 +1,16 @@
 /* eslint-disable */
+
 import React from 'react';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
+// import localStorage from 'local-storage';
 import { Redirect } from 'react-router-dom';
 import {
   TextField, CssBaseline, Card, Typography, Avatar,
   CardContent, withStyles, InputAdornment, Button, CircularProgress,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
-import localStorage from 'local-storage';
+// import localStorage from 'local-storage';
 import callApi from '../../libs/utils/api';
 import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
@@ -62,36 +64,37 @@ class Login extends React.Component {
       this.setState({ [key]: value });
     };
 
-    onClickHandler = async (data, openSnackBar) => {
-      console.log('Data is :', data);
-      this.setState({
-        loading: true,
-        hasError: true,
-      });
-
-      await callApi(data, 'post', '/user/login');
-      this.setState({ loading: false });
-      const response = localStorage.get('token');
-      console.log(' res inside login :', response);
-      if (response!=null &&response.status === 'ok') {
-        this.setState({
-          redirect: true,
-          hasError: false,
-          message: 'Successfully Login',
-        }, () => {
-          const { message } = this.state;
-          openSnackBar(message, 'success');
-        });
-        // history.push('/trainee');
-      } else {
-        this.setState({
-          message: 'Login Failed, Record Not Found',
-        }, () => {
-          const { message } = this.state;
-          openSnackBar(message, 'error');
-        });
-      }
-    }
+onClickHandler = async (data , openSnackBar) => {
+  console.log('Data is :', data);
+  this.setState({
+    loading: true,
+    hasError: true,
+  });
+ const response1 = await callApi(data, 'post', '/user/login');
+ console.log('res1', response1)
+//  console.log('res1 data', response1.token)
+  // localStorage.set('token', response1.token)
+  // console.log('res1 data', response1.token)
+  this.setState({ loading: false });
+  if (response1.token) {
+    this.setState({
+      redirect: true,
+      hasError: false,
+      message: 'Successfully Login',
+    }, () => {
+      const { message } = this.state;
+      localStorage.setItem('token', response1.token);
+      openSnackBar(message, 'success');
+    });
+  } else {
+    this.setState({
+      message: 'Login Failed, Record Not Found',
+    }, () => {
+      const { message } = this.state;
+      openSnackBar(message, 'error');
+    });
+  }
+}
 
   hasErrors = () => {
     try {

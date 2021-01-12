@@ -85,35 +85,34 @@ class AddDialog extends React.Component {
     }
   };
 
-  handleSubmit = async (e, openSnackBar) => {
-    e.preventDefault();
-    console.log('i am here');
-    const { name, email, password } = this.state;
-    this.setState({ loading: true });
-    // const header = localStorage.getItem('token');
-    await callApi('/trainee', 'POST', {
-      name, email, password,
-    })
-      .then((response) => {
-        console.log(response.data.message, 'response');
-        openSnackBar(response.data.message, 'Success');
-      })
-      .catch((err) => {
-        this.setState({
-          email: '',
-          name: '',
-          password: '',
-          showPassword: false,
-          loading: false,
-          touched: {
-            name: false,
-            email: false,
-            password: false,
-            confirmPassword: false,
-          },
-        });
-        console.log(err);
+  onClickHandler = async (data, openSnackBar) => {
+    this.setState({
+      loading: true,
+      hasErrors: true,
+    });
+    const { onSubmit } = this.props;
+    const response = await callApi(data, 'post', '/user/create');
+    this.setState({ loading: false });
+    console.log('response add dialog', response);
+    if (response !== null && response.status === 'ok') {
+      this.setState({
+        hasErrors: false,
+        message: 'Data Added by Authorize Person successfully',
+      },
+      () => {
+        const { message } = this.state;
+        onSubmit(data);
+        openSnackBar(message, 'success');
       });
+    } else {
+      this.setState({
+        hasErrors: false,
+        message: ' You are not authorize to submitting a data',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'error');
+      });
+    }
   }
 
   isTouched = (field) => {
@@ -137,7 +136,9 @@ class AddDialog extends React.Component {
     const {
       open, onClose, classes,
     } = this.props;
-    // const { name, email, password } = this.state;
+    const {
+      id, name, email, password,
+    } = this.state;
     const ans = [];
     config.forEach((value) => {
       ans.push(<CustomTextField
@@ -153,7 +154,7 @@ class AddDialog extends React.Component {
 
     return (
       <SnackbarContext.Consumer>
-        {(value) => (
+        {({ openSnackBar }) => (
           <form>
             <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
               <DialogTitle id="form-dialog-title">Add Trainee</DialogTitle>
@@ -185,7 +186,11 @@ class AddDialog extends React.Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={(event) => this.handleSubmit(event, value)}
+                    onClick={() => {
+                      this.onClickHandler({
+                        id, name, email, password,
+                      }, openSnackBar);
+                    }}
                     disabled={this.hasErrors()}
                   >
                     SUBMIT
@@ -199,11 +204,10 @@ class AddDialog extends React.Component {
     );
   }
 }
-
 export default withStyles(passwordStyle)(AddDialog);
 AddDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  // onSubmit: PropTypes.func.isRequired,
+  onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };

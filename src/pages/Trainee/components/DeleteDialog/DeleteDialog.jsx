@@ -1,57 +1,111 @@
-import React from 'react';
+/* eslint-disable no-console */
+import React, { Component } from 'react';
+import Dialog from '@material-ui/core/Dialog';
+import Button from '@material-ui/core/Button';
+import { CircularProgress } from '@material-ui/core';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import {
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Button,
-} from '@material-ui/core';
+import { SnackbarContext } from '../../../../contexts/index';
+import callApi from '../../../../libs/utils/api';
 
-const useStyles = () => ({
-  button_color: {
-    backgroundColor: 'blue',
-    color: 'white',
-  },
-});
+class DeleteDialog extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      email: '',
+      message: '',
+      loading: false,
+    };
+  }
 
-function DeleteDialog(props) {
+handleChange = (prop) => (event) => {
+  this.setState({ [prop]: event.target.value }, () => console.log(this.state));
+};
+
+handleClose = () => {
+  this.setState({ open: false });
+};
+
+onClickHandler = async (data, openSnackBar) => {
+  this.setState({
+    loading: true,
+  });
+  console.log('deleted Data', data);
+  const { onSubmit } = this.props;
+  const { _id: id } = data;
+  console.log('_id', id);
+  const response = await callApi(data, 'delete', `/user/${id}`);
+  console.log('Deleted response', response);
+  this.setState({ loading: false });
+  if (response.status === 'ok') {
+    this.setState({
+      message: 'Deleted Successfully ',
+    }, () => {
+      const { message } = this.state;
+      onSubmit(data);
+      openSnackBar(message, 'success');
+    });
+  } else {
+    this.setState({
+      message: 'Error While Deleting',
+    }, () => {
+      const { message } = this.state;
+      openSnackBar(message, 'error');
+    });
+  }
+}
+
+render() {
   const {
-    openRemove, onClose, remove, classes,
-  } = props;
+    open, onClose, onSubmit, data,
+  } = this.props;
+  const { loading } = this.state;
   return (
-    <div width="50%">
-      <Dialog
-        open={openRemove}
-        variant="outlined"
-        color="primary"
-        aria-labelledby="form-dialog-title"
-        fullWidth
-      >
-        <DialogTitle id="form-dialog-title">Remove Trainee</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Do you really want to remove Trainee ?
-          </DialogContentText>
-        </DialogContent>
+    <Dialog
+      open={open}
+      onClose={() => this.handleClose()}
+      fullWidth
+      maxWidth="md"
+    >
+      <DialogTitle id="form-dialog-title">Remove Trainee</DialogTitle>
+      <DialogContentText style={{ marginLeft: 25 }}>
+        Do you really want to remove the trainee?
         <DialogActions>
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={remove} color="primary" autoFocus className={classes.button_color}>
-            Delete
-          </Button>
+          <SnackbarContext.Consumer>
+            {({ openSnackBar }) => (
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={() => {
+                  onSubmit({ data });
+                  this.onClickHandler(data, openSnackBar);
+                }}
+              >
+                {loading && (
+                  <CircularProgress size={15} />
+                )}
+                {loading && <span>Deleting</span>}
+                {!loading && <span>Delete</span>}
+              </Button>
+            )}
+          </SnackbarContext.Consumer>
         </DialogActions>
-      </Dialog>
-    </div>
+      </DialogContentText>
+    </Dialog>
   );
 }
+}
+
 DeleteDialog.propTypes = {
-  openRemove: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  remove: PropTypes.func.isRequired,
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  onSubmit: PropTypes.func.isRequired,
+  data: PropTypes.objectOf(PropTypes.string).isRequired,
 };
-export default withStyles(useStyles)(DeleteDialog);
+export default (DeleteDialog);
