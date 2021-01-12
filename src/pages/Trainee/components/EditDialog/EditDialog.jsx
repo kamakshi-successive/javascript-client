@@ -122,10 +122,14 @@ class EditDialog extends React.Component {
       });
     }
   }
+
+refreshPage = () => {
+  this.setState(window.location.reload());
+}
   
     render() {
     const {
-      Editopen, handleEditClose, handleEdit, data, classes,
+      Editopen, handleEditClose, handleEdit, data, classes
     } = this.props;
     const { name, email, error, loading } = this.state;
     const { originalId: id } = data;
@@ -200,7 +204,10 @@ class EditDialog extends React.Component {
            <SnackbarContext.Consumer>
            {({ openSnackBar }) => (
           <Button
-          onClick={() => {this.onClickHandler({name, email, id }, openSnackBar)
+          onClick={() => {
+            this.onClickHandler({name, email, id }, openSnackBar)
+            handleEditClose()
+            this.refreshPage();
             }}
               className={
                 (name === data.name && email === data.email) || this.hasErrors()

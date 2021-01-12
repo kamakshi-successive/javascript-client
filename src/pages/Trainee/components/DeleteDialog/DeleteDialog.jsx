@@ -56,6 +56,11 @@ onClickHandler = async (data, openSnackBar) => {
       openSnackBar(message, 'error');
     });
   }
+  // force a re-render
+}
+
+refreshPage = () => {
+  this.setState(window.location.reload());
 }
 
 render() {
@@ -85,6 +90,7 @@ render() {
                 onClick={() => {
                   onSubmit({ data });
                   this.onClickHandler(data, openSnackBar);
+                  this.refreshPage();
                 }}
               >
                 {loading && (

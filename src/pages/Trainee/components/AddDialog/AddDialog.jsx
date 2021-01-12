@@ -132,6 +132,10 @@ class AddDialog extends React.Component {
     return '';
   }
 
+  refreshPage = () => {
+    this.setState(window.location.reload());
+  }
+
   render() {
     const {
       open, onClose, classes,
@@ -186,11 +190,14 @@ class AddDialog extends React.Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={() => {
-                      this.onClickHandler({
-                        id, name, email, password,
-                      }, openSnackBar);
-                    }}
+                    onClick={
+                      () => {
+                        this.onClickHandler({
+                          id, name, email, password,
+                        }, openSnackBar);
+                        this.refreshPage();
+                      }
+                    }
                     disabled={this.hasErrors()}
                   >
                     SUBMIT

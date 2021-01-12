@@ -182,6 +182,7 @@ class TraineeList extends React.Component {
                 onClose={this.handleRemoveClose}
                 onSubmit={this.handleRemove}
                 open={RemoveOpen}
+                // refreshPage={this.refreshPage}
               />
               <br />
               <br />
