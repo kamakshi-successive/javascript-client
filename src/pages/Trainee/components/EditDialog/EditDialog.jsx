@@ -16,6 +16,8 @@ import {
 import Grid from '@material-ui/core/Grid';
 import EmailIcon from '@material-ui/icons/Email';
 import PersonIcon from '@material-ui/icons/Person';
+import { SnackbarContext } from '../../../../contexts/index';
+import callApi from '../../../../libs/utils/api';
 
 const useStyles = () => ({
   button_color: {
@@ -38,6 +40,7 @@ class EditDialog extends React.Component {
     this.state = {
       name: '',
       email: '',
+      loading: false,
       error: {
         name: '',
         email: '',
@@ -93,12 +96,44 @@ class EditDialog extends React.Component {
     iserror = iserror.filter((errorMessage) => errorMessage !== '');
     return !!iserror.length;
   };
+  
+  onClickHandler = async (Data, openSnackBar) => {
+    console.log('data inside edit :', Data)
+    const { onSubmit } = this.props;
+    this.setState({
+      loading: true,
+    });
+    const response = await callApi({id:Data.id, dataToUpdate:{...Data}}, 'put', '/user/update');
+    console.log('Response :', response);
+    this.setState({ loading: false });
+    if (response !== 'undefined') {
+      this.setState({
+        message: ' Updated Successfully',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'success');
+      });
+    } else {
+      this.setState({
+        message: 'Error while submitting',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'error');
+      });
+    }
+  }
 
-  render() {
+refreshPage = () => {
+  this.setState(window.location.reload());
+}
+  
+    render() {
     const {
-      Editopen, handleEditClose, handleEdit, data, classes,
+      Editopen, handleEditClose, handleEdit, data, classes
     } = this.props;
-    const { name, email, error } = this.state;
+    const { name, email, error, loading } = this.state;
+    const { originalId: id } = data;
+    console.log('id in edit: ', id);
     return (
       <div>
         <Dialog
@@ -166,20 +201,30 @@ class EditDialog extends React.Component {
             <Button onClick={handleEditClose} color="primary">
               Cancel
             </Button>
-            <Button
-              onClick={() => handleEdit(name, email)}
+           <SnackbarContext.Consumer>
+           {({ openSnackBar }) => (
+          <Button
+          onClick={() => {
+            this.onClickHandler({name, email, id }, openSnackBar)
+            handleEditClose()
+            this.refreshPage();
+            }}
               className={
                 (name === data.name && email === data.email) || this.hasErrors()
                   ? classes.button_error
                   : classes.button_color
               }
               color="primary"
+              variant="contained"
               disabled={
                 !!((name === data.name && email === data.email) || this.hasErrors())
-              }
-            >
-              Submit
+              }>
+            {loading && <span>Submitting</span>}
+            {!loading && <span>Submit</span>}
             </Button>
+          )}
+          </SnackbarContext.Consumer>
+
           </DialogActions>
         </Dialog>
       </div>

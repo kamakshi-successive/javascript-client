@@ -7,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { Table1 } from '../../components';
-import trainees from './data/trainee';
+import callApi from '../../libs/utils/api';
 import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
 const useStyles = (theme) => ({
@@ -32,6 +32,9 @@ class TraineeList extends React.Component {
       deleteData: {},
       page: 0,
       rowsPerPage: 10,
+      items: [],
+      count: 0,
+      isLoaded: false,
     };
   }
 
@@ -68,6 +71,7 @@ class TraineeList extends React.Component {
   };
 
   handleChangePage = (event, newPage) => {
+    this.componentDidMount(newPage);
     this.setState({
       page: newPage,
     });
@@ -87,17 +91,12 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleRemove = (openSnackBar) => {
+  handleRemove = () => {
     const { deleteData } = this.state;
-    if (deleteData.createdAt >= '2019-02-14') {
-      openSnackBar('User Data Deleted Successfully', 'success');
-      console.log('Deleted Item ', deleteData);
-    } else {
-      openSnackBar('Cannot Delete User Data Successfully', 'error');
-    }
     this.setState({
       RemoveOpen: false,
     });
+    console.log('Deleted Item ', deleteData);
   };
 
   handleEditDialogOpen = (element) => () => {
@@ -113,21 +112,45 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleEdit = (openSnackBar, name, email) => {
-    openSnackBar('User Data Updated Successfully', 'success');
+  handleEdit = (name, email) => {
     this.setState({
       EditOpen: false,
     });
     console.log('Edited Item ', { name, email });
   };
 
+  componentDidMount = () => {
+    this.setState({ isLoaded: true });
+    const value = this.context;
+    console.log('val :', value);
+    // eslint-disable-next-line consistent-return
+    callApi({}, 'get', `/user?skip=${0}&limit=${20}`).then((response) => {
+      console.log('response compo', response);
+      if (response.data === undefined) {
+        this.setState({
+          isLoaded: false,
+        }, () => {
+        });
+      } else {
+        console.log('res inside traineelist :', response);
+        const record = response.data[0];
+        console.log('records aa :', record);
+        this.setState({ items: record, isLoaded: false, count: 100 });
+        return response;
+      }
+    });
+  }
+
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
   render() {
     const {
-      open, order, orderBy, page, rowsPerPage, EditOpen, RemoveOpen, editData,
+      open, order, orderBy, page, rowsPerPage, EditOpen,
+      RemoveOpen, editData, items, isLoaded, count,
+      deleteData,
     } = this.state;
     const { classes } = this.props;
+    console.log('itemms', items);
     return (
       <SnackbarContext.Consumer>
         {({ openSnackBar }) => (
@@ -150,20 +173,23 @@ class TraineeList extends React.Component {
               <EditDialog
                 Editopen={EditOpen}
                 handleEditClose={this.handleEditClose}
-                handleEdit={(name, email) => this.handleEdit(openSnackBar, name, email)}
+                handleEdit={this.handleEdit}
                 data={editData}
               />
               <br />
               <DeleteDialog
-                openRemove={RemoveOpen}
+                data={deleteData}
                 onClose={this.handleRemoveClose}
-                remove={(deleteData) => this.handleRemove(openSnackBar, deleteData)}
+                onSubmit={this.handleRemove}
+                open={RemoveOpen}
+                // refreshPage={this.refreshPage}
               />
               <br />
               <br />
               <Table1
+                loader={isLoaded}
                 id="id"
-                data={trainees}
+                data={items}
                 column={
                   [
                     {
@@ -198,7 +224,7 @@ class TraineeList extends React.Component {
                 orderBy={orderBy}
                 order={order}
                 onSelect={this.handleSelect}
-                count={100}
+                count={count}
                 page={page}
                 onChangePage={this.handleChangePage}
                 rowsPerPage={rowsPerPage}
@@ -210,7 +236,7 @@ class TraineeList extends React.Component {
     );
   }
 }
-
+TraineeList.contextType = SnackbarContext;
 TraineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };

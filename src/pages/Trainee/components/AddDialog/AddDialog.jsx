@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
 import {
@@ -7,6 +8,8 @@ import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import CustomTextField from './CustomTextField';
+import callApi from '../../../../libs/utils/api';
+import { SnackbarContext } from '../../../../contexts';
 
 const passwordStyle = () => ({
   passfield: {
@@ -82,6 +85,36 @@ class AddDialog extends React.Component {
     }
   };
 
+  onClickHandler = async (data, openSnackBar) => {
+    this.setState({
+      loading: true,
+      hasErrors: true,
+    });
+    const { onSubmit } = this.props;
+    const response = await callApi(data, 'post', '/user/create');
+    this.setState({ loading: false });
+    console.log('response add dialog', response);
+    if (response !== null && response.status === 'ok') {
+      this.setState({
+        hasErrors: false,
+        message: 'Data Added by Authorize Person successfully',
+      },
+      () => {
+        const { message } = this.state;
+        onSubmit(data);
+        openSnackBar(message, 'success');
+      });
+    } else {
+      this.setState({
+        hasErrors: false,
+        message: ' You are not authorize to submitting a data',
+      }, () => {
+        const { message } = this.state;
+        openSnackBar(message, 'error');
+      });
+    }
+  }
+
   isTouched = (field) => {
     const { touched } = this.state;
     this.setState({
@@ -99,11 +132,17 @@ class AddDialog extends React.Component {
     return '';
   }
 
+  refreshPage = () => {
+    this.setState(window.location.reload());
+  }
+
   render() {
     const {
-      open, onClose, onSubmit, classes,
+      open, onClose, classes,
     } = this.props;
-    const { name, email, password } = this.state;
+    const {
+      id, name, email, password,
+    } = this.state;
     const ans = [];
     config.forEach((value) => {
       ans.push(<CustomTextField
@@ -118,39 +157,57 @@ class AddDialog extends React.Component {
     });
 
     return (
-      <>
-        <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
-          <DialogTitle id="form-dialog-title">Add Trainee</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Enter your trainee details
-            </DialogContentText>
-            <div>
-              {ans[0]}
-            </div>
+      <SnackbarContext.Consumer>
+        {({ openSnackBar }) => (
+          <form>
+            <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title">
+              <DialogTitle id="form-dialog-title">Add Trainee</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  Enter your trainee details
+                </DialogContentText>
+                <div>
+                  {ans[0]}
+                </div>
             &nbsp;
-            <div>
-              {ans[1]}
-            </div>
+                <div>
+                  {ans[1]}
+                </div>
             &nbsp;
-            <div className={classes.passfield}>
-              <div className={classes.pass}>
-                {ans[2]}
-              </div>
+                <div className={classes.passfield}>
+                  <div className={classes.pass}>
+                    {ans[2]}
+                  </div>
               &nbsp;
               &nbsp;
-              <div className={classes.pass}>
-                {ans[3]}
-              </div>
-            </div>
+                  <div className={classes.pass}>
+                    {ans[3]}
+                  </div>
+                </div>
         &nbsp;
-            <div align="right">
-              <Button onClick={onClose} color="primary">CANCEL</Button>
-              <Button variant="contained" color="primary" disabled={this.hasErrors()} onClick={() => onSubmit({ name, email, password })}>SUBMIT</Button>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </>
+                <div align="right">
+                  <Button onClick={onClose} color="primary">CANCEL</Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={
+                      () => {
+                        this.onClickHandler({
+                          id, name, email, password,
+                        }, openSnackBar);
+                        this.refreshPage();
+                      }
+                    }
+                    disabled={this.hasErrors()}
+                  >
+                    SUBMIT
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </form>
+        )}
+      </SnackbarContext.Consumer>
     );
   }
 }
