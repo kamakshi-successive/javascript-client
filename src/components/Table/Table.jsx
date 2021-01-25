@@ -54,7 +54,7 @@ function TableComponent(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {(rowsPerPage > 0
+          {((rowsPerPage) > 0
             ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             : data
           ).map((element) => (

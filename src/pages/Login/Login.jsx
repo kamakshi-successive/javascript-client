@@ -73,8 +73,10 @@ onClickHandler = async (data , openSnackBar) => {
   console.log('login user', { loginUser })
   const response1 = await loginUser({ variables: {email, password}});
   console.log('res1', response1)
+  console.log('res1 data', response1.data)
+  console.log('res1 data loginUser', response1.data.loginUser)
   this.setState({ loading: false });
-  if (response1.token) {
+  if (response1.data.loginUser) {
     this.setState({
       redirect: true,
       hasError: false,
@@ -93,26 +95,6 @@ onClickHandler = async (data , openSnackBar) => {
     });
   }
 }
-
-// handleSubmit = async() => {
-//   const {
-//     email,
-//     password,
-//   } = this.state;
-  
-//   console.log('this.state', email, password)
-  
-//   const {
-//     loginUser,
-//     history,
-//   } = this.props;
-
-//   console.log('loginUser', loginUser)
-//   console.log('history', history);
-
-//   await loginUser({ variables: {email, password}})
-//   history.push('/trainee');
-// }
 
 hasErrors = () => {
     try {
