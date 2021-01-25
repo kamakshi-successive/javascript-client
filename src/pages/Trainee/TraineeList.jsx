@@ -126,6 +126,7 @@ class TraineeList extends React.Component {
     // eslint-disable-next-line consistent-return
     callApi({}, 'get', `/user?skip=${0}&limit=${20}`).then((response) => {
       console.log('response compo', response);
+      console.log('res data', response.data);
       if (response.data === undefined) {
         this.setState({
           isLoaded: false,
@@ -133,7 +134,7 @@ class TraineeList extends React.Component {
         });
       } else {
         console.log('res inside traineelist :', response);
-        const record = response.data[0];
+        const record = response.data;
         console.log('records aa :', record);
         this.setState({ items: record, isLoaded: false, count: 100 });
         return response;

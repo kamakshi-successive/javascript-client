@@ -83,7 +83,7 @@ onClickHandler = async (data , openSnackBar) => {
       message: 'Successfully Login',
     }, () => {
       const { message } = this.state;
-      localStorage.setItem('token', response1.token);
+      localStorage.setItem('token', response1.data.loginUser);
       openSnackBar(message, 'success');
     });
   } else {
