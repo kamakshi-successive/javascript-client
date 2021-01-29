@@ -1,4 +1,4 @@
-import traineewrapper from './Wrapper';
+// import traineewrapper from './Wrapper';
 
-export { traineewrapper };
+// export { traineewrapper };
 export { default as Trainee } from './Trainee';

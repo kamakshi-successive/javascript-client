@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
@@ -7,10 +8,12 @@ import { Button, withStyles } from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
+import { graphql } from '@apollo/react-hoc';
+import Compose from 'lodash.flowright';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { Table1 } from '../../components';
-// import callApi from '../../libs/utils/api';
 import { SnackbarContext } from '../../contexts/SnackBarProvider';
+import { GET_TRAINEE_LIST } from './query';
 
 const useStyles = (theme) => ({
   root: {
@@ -70,22 +73,10 @@ class TraineeList extends React.Component {
     });
   };
 
-  // handleChangePage = (event, newPage) => {
-  //   this.componentDidMount(newPage);
-  //   this.setState({
-  //     page: newPage,
-  //   });
-  // };
-
   handlePageChange = (refetch) => async (event, newPage) => {
     const { rowsPerPage } = this.state;
-    this.setState({
-      page: newPage,
-      // }, () => {
-      //   refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage });
-      // }
-    });
-    // refetch;
+    await this.setState({ page: newPage });
+    refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage });
   }
 
   handleChangeRowsPerPage = (event) => {
@@ -146,13 +137,14 @@ class TraineeList extends React.Component {
     } = this.state;
     const { classes } = this.props;
     const {
-      getTrainee: {
+      data: {
         getAllTrainees: {
           data = [], totalCount = 0,
         } = {},
         refetch,
       },
     } = this.props;
+    console.log('get data', data);
     return (
       <SnackbarContext.Consumer>
         {({ openSnackBar }) => (
@@ -184,7 +176,6 @@ class TraineeList extends React.Component {
                 onClose={this.handleRemoveClose}
                 onSubmit={this.handleRemove}
                 open={RemoveOpen}
-                // refreshPage={this.refreshPage}
               />
               <br />
               <br />
@@ -228,8 +219,8 @@ class TraineeList extends React.Component {
                 onSelect={this.handleSelect}
                 count={totalCount}
                 page={page}
-                // onChangePage={this.handleChangePage}
                 onChangePage={this.handlePageChange(refetch)}
+                onChangeRowsPerPage={this.handleChangeRowsPerPage}
                 rowsPerPage={rowsPerPage}
               />
             </div>
@@ -244,4 +235,9 @@ TraineeList.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };
 
-export default withStyles(useStyles)(TraineeList);
+export default Compose(
+  withStyles(useStyles),
+  graphql(GET_TRAINEE_LIST, {
+    options: { variables: { option: { skip: 0, limit: 10 } } },
+  }),
+)(TraineeList);

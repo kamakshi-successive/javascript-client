@@ -21,6 +21,7 @@
     "commitizen": "^4.2.2",
     "eslint-config-airbnb": "^18.2.1",
     "graphql": "^15.4.0",
+    "graphql-request": "^3.4.0",
     "graphql-tag": "^2.11.0",
     "install-peerdeps": "^2.0.3",
     "local-storage": "^2.0.0",
