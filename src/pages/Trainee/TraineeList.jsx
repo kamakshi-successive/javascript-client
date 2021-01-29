@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -7,7 +9,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import moment from 'moment';
 import { AddDialog, EditDialog, DeleteDialog } from './components/index';
 import { Table1 } from '../../components';
-import callApi from '../../libs/utils/api';
+// import callApi from '../../libs/utils/api';
 import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
 const useStyles = (theme) => ({
@@ -31,9 +33,7 @@ class TraineeList extends React.Component {
       editData: {},
       deleteData: {},
       page: 0,
-      rowsPerPage: 10,
-      items: [],
-      count: 0,
+      rowsPerPage: 5,
       isLoaded: false,
     };
   }
@@ -70,14 +70,31 @@ class TraineeList extends React.Component {
     });
   };
 
-  handleChangePage = (event, newPage) => {
-    this.componentDidMount(newPage);
+  // handleChangePage = (event, newPage) => {
+  //   this.componentDidMount(newPage);
+  //   this.setState({
+  //     page: newPage,
+  //   });
+  // };
+
+  handlePageChange = (refetch) => async (event, newPage) => {
+    const { rowsPerPage } = this.state;
     this.setState({
       page: newPage,
+      // }, () => {
+      //   refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage });
+      // }
+    });
+    // refetch;
+  }
+
+  handleChangeRowsPerPage = (event) => {
+    this.setState({
+      rowsPerPage: event.target.value,
+      page: 0,
     });
   };
 
-  // eslint-disable-next-line no-unused-vars
   handleRemoveDialogOpen = (element) => (event) => {
     this.setState({
       RemoveOpen: true,
@@ -119,39 +136,23 @@ class TraineeList extends React.Component {
     console.log('Edited Item ', { name, email });
   };
 
-  componentDidMount = () => {
-    this.setState({ isLoaded: true });
-    const value = this.context;
-    console.log('val :', value);
-    // eslint-disable-next-line consistent-return
-    callApi({}, 'get', `/user?skip=${0}&limit=${20}`).then((response) => {
-      console.log('response compo', response);
-      console.log('res data', response.data);
-      if (response.data === undefined) {
-        this.setState({
-          isLoaded: false,
-        }, () => {
-        });
-      } else {
-        console.log('res inside traineelist :', response);
-        const record = response.data;
-        console.log('records aa :', record);
-        this.setState({ items: record, isLoaded: false, count: 100 });
-        return response;
-      }
-    });
-  }
-
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
   render() {
     const {
       open, order, orderBy, page, rowsPerPage, EditOpen,
-      RemoveOpen, editData, items, isLoaded, count,
+      RemoveOpen, editData, isLoaded, count,
       deleteData,
     } = this.state;
     const { classes } = this.props;
-    console.log('itemms', items);
+    const {
+      getTrainee: {
+        getAllTrainees: {
+          data = [], totalCount = 0,
+        } = {},
+        refetch,
+      },
+    } = this.props;
     return (
       <SnackbarContext.Consumer>
         {({ openSnackBar }) => (
@@ -165,7 +166,7 @@ class TraineeList extends React.Component {
                   open={open}
                   onClose={this.handleClose}
                   onSubmit={
-                    (data) => this.handleSubmit(openSnackBar, data)
+                    (data1) => this.handleSubmit(openSnackBar, data1)
                   }
                 />
               </div>
@@ -190,7 +191,7 @@ class TraineeList extends React.Component {
               <Table1
                 loader={isLoaded}
                 id="id"
-                data={items}
+                data={data}
                 column={
                   [
                     {
@@ -225,9 +226,10 @@ class TraineeList extends React.Component {
                 orderBy={orderBy}
                 order={order}
                 onSelect={this.handleSelect}
-                count={count}
+                count={totalCount}
                 page={page}
-                onChangePage={this.handleChangePage}
+                // onChangePage={this.handleChangePage}
+                onChangePage={this.handlePageChange(refetch)}
                 rowsPerPage={rowsPerPage}
               />
             </div>

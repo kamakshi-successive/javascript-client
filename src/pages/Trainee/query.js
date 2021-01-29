@@ -1,18 +1,16 @@
-import gql from 'graphql-tag';
+import { gql } from 'apollo-boost';
 
-const GET_TRAINEE = gql`
-query GetTrainee($skip: Int, $limit: Int) {
-  getTrainee(options: { skip: $skip, limit: $limit}) {
-    records{
-      name,
-      role,
-      email,
-      originalId
-      createdAt,
-      _id
-    },
+const GET_TRAINEE_LIST = gql`
+  query getAllTrainees{
+    getAllTrainees { 
+    message
+    totalCount
     count
+    data {
+      name
+      email
+      createdAt
+      }
     }
   }`;
-
-export default { GET_TRAINEE };
+export { GET_TRAINEE_LIST };
