@@ -9,6 +9,8 @@ query GetAllTrainees($option: options){
     name
     email
     createdAt
+    originalId
+    id
     }
   }
 }

@@ -12,7 +12,7 @@ const authLink = setContext((_, { headers }) => {
 
   const token = localStorage.getItem('token');
   // eslint-disable-next-line no-console
-  console.log('token', token);
+  // console.log('token', token);
   // return the headers to the context so httplink can read them
   return {
     headers: {

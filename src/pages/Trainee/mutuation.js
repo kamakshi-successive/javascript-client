@@ -1,27 +1,29 @@
-/* eslint-disable no-console */
 import { gql } from 'apollo-boost';
 
-const CREATE_USER = gql`
-    mutation createTrainee($name: String, $email: String, $password: String) {
-      CreateUser(payload: {name: $name,email: $email, password: $password }){
-        name,
-        email
-      }
+const CREATE_TRAINEE = gql`
+mutation CreateTrainee($name: String!, $email: String!, $password: String!) {
+    createTrainee(payload: { name: $name, email: $email,password: $password}) {
+      message
+      status
     }
+}
 `;
 
-const UPDATE_USER = gql`
-    mutation updateTrainee($name: String, $email: String, $role: String, $password: String, $id: String) {
-      UpdateUser(payload: { name: $name,email: $email, role: $role,password: $password,id: $id })
+const UPDATE_TRAINEE = gql`
+mutation UpdateTrainee($id: ID!, $name: String, $email: String) {
+    updateTrainee(payload: { id: $id,name: $name, email: $email}){
+      status
     }
+}
 `;
 
-const DELETE_USER = gql`
-    mutation deleteTrainee($originalId: String!) {
-      DeleteUser(payload: { originalId: $originalId })
+const DELETE_TRAINEE = gql`
+mutation Deletetrainee($originalId: String!) {
+    deleteTrainee(payload: {originalId: $originalId} )
+    {
+      message
     }
+}
 `;
 
-export {
-  CREATE_USER, UPDATE_USER, DELETE_USER,
-};
+export { DELETE_TRAINEE, UPDATE_TRAINEE, CREATE_TRAINEE };
