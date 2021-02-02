@@ -7,7 +7,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
-import { SnackbarContext } from '../../../../contexts/index';
+// import { SnackbarContext } from '../../../../contexts/index';
 // import callApi from '../../../../libs/utils/api';
 
 class DeleteDialog extends Component {
@@ -48,23 +48,19 @@ render() {
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <SnackbarContext.Consumer>
-            {({ openSnackBar }) => (
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => {
-                  onSubmit(data, openSnackBar);
-                }}
-              >
-                {loading && (
-                  <CircularProgress size={15} />
-                )}
-                {loading && <span>Deleting</span>}
-                {!loading && <span>Delete</span>}
-              </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              onSubmit(data);
+            }}
+          >
+            {loading && (
+              <CircularProgress size={15} />
             )}
-          </SnackbarContext.Consumer>
+            {loading && <span>Deleting</span>}
+            {!loading && <span>Delete</span>}
+          </Button>
         </DialogActions>
       </DialogContentText>
     </Dialog>

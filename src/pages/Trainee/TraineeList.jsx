@@ -65,10 +65,10 @@ class TraineeList extends React.Component {
       const { name, email, password } = data1;
       console.log('data in cre :', name, email, password);
       await createTrainee({ variables: { name, email, password } });
-      refetch();
       this.setState({
         open: false,
       }, () => {
+        refetch();
         openSnackBar('Trainee Created Successfully', 'success');
       });
     } catch (err) {
@@ -95,10 +95,9 @@ class TraineeList extends React.Component {
   };
 
   handlePageChange = (refetch) => async (event, newPage) => {
-    const { rowsPerPage } = this.state;
+    const { data: { variables } } = this.props;
     await this.setState({ page: newPage });
-    refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage });
-    // console.log('refetch', refetch({ skip: newPage * (rowsPerPage), limit: rowsPerPage }));
+    refetch({ variables });
   }
 
   handleRemoveDialogOpen = (element) => (event) => {
@@ -132,10 +131,10 @@ class TraineeList extends React.Component {
       const { name, email, id } = data1;
       console.log('data in upd :', name, email, id);
       await updateTrainee({ variables: { name, email, id } });
-      refetch();
       this.setState({
         EditOpen: false,
       }, () => {
+        refetch();
         openSnackBar('Trainee Updated Successfully', 'success');
       });
     } catch (err) {
@@ -148,35 +147,18 @@ class TraineeList extends React.Component {
     }
   };
 
-  onDeleteTrainee = async (data1, deleteTrainee, openSnackBar) => {
+  onDeleteTrainee = async (data1, deleteTrainee, openSnackBar, refetch) => {
     const { originalId } = data1;
     const { rowsPerPage, page } = this.state;
-    const {
-      data: {
-        getAllTrainees: { count = 0 } = {},
-        refetch,
-      },
-    } = this.props;
     const response = await deleteTrainee({ variables: { originalId } });
     if (response) {
       this.setState({
         RemoveOpen: false,
       }, () => {
+        refetch();
         openSnackBar('Trainee Deleted Successfully', 'success');
       });
-      if (count - page * rowsPerPage === 1 && page > 0) {
-        refetch({ skip: (page - 1) * rowsPerPage, limit: rowsPerPage });
-      }
     }
-  }
-
-  handlePageChange = (refetch) => (event, newPage) => {
-    const { rowsPerPage } = this.state;
-    this.setState({
-      page: newPage,
-    }, () => {
-      refetch({ skip: newPage * (rowsPerPage.length), limit: rowsPerPage.length });
-    });
   }
 
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
@@ -184,21 +166,21 @@ class TraineeList extends React.Component {
   render() {
     const {
       open, order, orderBy, page, rowsPerPage, EditOpen,
-      RemoveOpen, editData, isLoaded, count,
+      RemoveOpen, editData, isLoaded,
       deleteData,
     } = this.state;
     const { classes } = this.props;
     const {
       data: {
         getAllTrainees: {
-          data = [], totalCount = 0,
+          data = [],
         } = {},
         refetch,
         loading,
       },
     } = this.props;
-    const variables = { skip: page * rowsPerPage.length, limit: rowsPerPage.length };
-    console.log('get data', data);
+    console.log('data uis : ', data);
+    const variables = { skip: page * rowsPerPage, limit: rowsPerPage };
     return (
       <>
         <Mutation
@@ -254,7 +236,8 @@ class TraineeList extends React.Component {
                               data={deleteData}
                               onClose={this.handleRemoveClose}
                               onSubmit={
-                                (data1) => this.onDeleteTrainee(data1, deleteTrainee, openSnackBar)
+                                (data1) => this.onDeleteTrainee(data1, deleteTrainee,
+                                  openSnackBar, refetch)
                               }
                               open={RemoveOpen}
                               loading={deleteLoader}
@@ -299,7 +282,7 @@ class TraineeList extends React.Component {
                               orderBy={orderBy}
                               order={order}
                               onSelect={this.handleSelect}
-                              count={totalCount}
+                              count={data.length}
                               page={page}
                               onChangePage={this.handlePageChange(refetch)}
                               onChangeRowsPerPage={this.handleChangeRowsPerPage}
@@ -328,6 +311,6 @@ TraineeList.propTypes = {
 export default Compose(
   withStyles(useStyles),
   graphql(GET_TRAINEE_LIST, {
-    options: { variables: { option: { skip: 0, limit: 10 } } },
+    options: { variables: { skip: 0, limit: 10 } },
   }),
 )(TraineeList);

@@ -1,10 +1,10 @@
 import { gql } from 'apollo-boost';
 
 const GET_TRAINEE_LIST = gql`
-query GetAllTrainees($option: options){
-  getAllTrainees(option: $option) { 
+query GetAllTrainees($skip: Int, $limit: Int){
+  getAllTrainees(payload: {skip: $skip, limit: $limit}) { 
   message
-  totalCount
+  count
   data {
     name
     email
