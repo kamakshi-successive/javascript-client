@@ -16,6 +16,7 @@ import { Table1 } from '../../components';
 import { SnackbarContext } from '../../contexts/SnackBarProvider';
 import { GET_TRAINEE_LIST } from './query';
 import { UPDATE_TRAINEE, CREATE_TRAINEE, DELETE_TRAINEE } from './mutuation';
+import { CREATED_TRAINEE_SUB, DELETED_TRAINEE_SUB, UPDATED_TRAINEE_SUB } from './Subscription';
 
 const useStyles = (theme) => ({
   root: {
@@ -60,7 +61,8 @@ class TraineeList extends React.Component {
     });
   };
 
-  onSubmitAdd = async (data1, openSnackBar, createTrainee, refetch) => {
+  onSubmitAdd = async (data1, openSnackBar, createTrainee) => {
+    const { data: { refetch } } = this.props;
     try {
       const { name, email, password } = data1;
       console.log('data in cre :', name, email, password);
@@ -68,7 +70,7 @@ class TraineeList extends React.Component {
       this.setState({
         open: false,
       }, () => {
-        refetch();
+        refetch({ skip: 0, limit: 5 });
         openSnackBar('Trainee Created Successfully', 'success');
       });
     } catch (err) {
@@ -94,10 +96,18 @@ class TraineeList extends React.Component {
     });
   };
 
-  handlePageChange = (refetch) => async (event, newPage) => {
-    const { data: { variables } } = this.props;
-    await this.setState({ page: newPage });
-    refetch({ variables });
+  handlePageChange = async (event, newPage) => {
+    // const { data: { variables } } = this.props;
+    // console.log('variables', variables);
+    const { page } = this.state;
+    console.log('page', page);
+    console.log('newPage', newPage);
+    const { data: { refetch } } = this.props;
+    const limit = 5;
+    const skip = limit * newPage;
+    await this.setState({ page: newPage }, () => refetch({ skip, limit }));
+    const data = await refetch({ skip, limit });
+    console.log('HandelPageChange', data);
   }
 
   handleRemoveDialogOpen = (element) => (event) => {
@@ -126,8 +136,9 @@ class TraineeList extends React.Component {
     });
   };
 
-  onSubmitEdit = async (data1, openSnackBar, updateTrainee, refetch) => {
+  onSubmitEdit = async (data1, openSnackBar, updateTrainee) => {
     try {
+      const { data: { refetch } } = this.props;
       const { name, email, id } = data1;
       console.log('data in upd :', name, email, id);
       await updateTrainee({ variables: { name, email, id } });
@@ -147,10 +158,12 @@ class TraineeList extends React.Component {
     }
   };
 
-  onDeleteTrainee = async (data1, deleteTrainee, openSnackBar, refetch) => {
+  onDeleteTrainee = async (data1, deleteTrainee, openSnackBar) => {
+    const { data: { refetch } } = this.props;
     const { originalId } = data1;
     const { rowsPerPage, page } = this.state;
     const response = await deleteTrainee({ variables: { originalId } });
+    console.log('trainee del', response, originalId);
     if (response) {
       this.setState({
         RemoveOpen: false,
@@ -163,6 +176,86 @@ class TraineeList extends React.Component {
 
   getDateFormatted = (date) => moment(date).format('dddd, MMMM Do YYYY, h:mm:ss a');
 
+  componentDidMount = () => {
+    const { data: { subscribeToMore } } = this.props;
+    subscribeToMore({
+      document: CREATED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { data } } = prev;
+        console.log('trainee created data', data);
+        const { data: { traineeAdded } } = subscriptionData;
+        console.log('trainee Created data........', traineeAdded.originalId);
+        const createdRecords = [...data].map((records) => {
+          console.log('ddddd ', records);
+          if (records.originalId === traineeAdded.originalId) {
+            console.log('found match ');
+            return {
+              ...records,
+              ...traineeAdded,
+            };
+          }
+          return records;
+        });
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.TraineeCount,
+            data: createdRecords,
+          },
+        };
+      },
+    });
+
+    subscribeToMore({
+      document: UPDATED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { data } } = prev;
+        console.log('trainee updated data', data);
+        const { data: { traineeUpdated } } = subscriptionData;
+        console.log('trainee updated data', traineeUpdated.data.originalId);
+        const updatedRecords = [...data].map((records) => {
+          console.log('ddddd ', records.originalId);
+          if (records.originalId === traineeUpdated.data.originalId) {
+            console.log('found match ');
+            return {
+              ...records,
+              ...traineeUpdated,
+            };
+          }
+          return records;
+        });
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.TraineeCount,
+            data: updatedRecords,
+          },
+        };
+      },
+    });
+    subscribeToMore({
+      document: DELETED_TRAINEE_SUB,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData) return prev;
+        const { getAllTrainees: { data } } = prev;
+        console.log('data mmmmmmmmm', data);
+        const { data: { traineeDeleted } } = subscriptionData;
+        console.log('traineeDeleted', traineeDeleted);
+        // eslint-disable-next-line max-len
+        const updatedRecords = [...data].filter((records) => records.originalId !== traineeDeleted.result);
+        return {
+          getAllTrainees: {
+            ...prev.getAllTrainees,
+            ...prev.getAllTrainees.TraineeCount - 1,
+            data: updatedRecords,
+          },
+        };
+      },
+    });
+  }
+
   render() {
     const {
       open, order, orderBy, page, rowsPerPage, EditOpen,
@@ -170,32 +263,32 @@ class TraineeList extends React.Component {
       deleteData,
     } = this.state;
     const { classes } = this.props;
+    const { data: { getAllTrainees = {} } } = this.props;
+    console.log('getAllTrainees', getAllTrainees);
     const {
       data: {
         getAllTrainees: {
-          data = [],
+          data = [], totalCount,
         } = {},
         refetch,
         loading,
       },
     } = this.props;
     console.log('data uis : ', data);
-    const variables = { skip: page * rowsPerPage, limit: rowsPerPage };
+    // console.log('data totalCount : ', totalCount);
+    const variables = { skip: page * 5, limit: 5 };
     return (
       <>
         <Mutation
           mutation={DELETE_TRAINEE}
-          refetchQueries={[{ query: GET_TRAINEE_LIST, variables }]}
         >
           {(deleteTrainee, deleteLoader = { loading }) => (
             <Mutation
               mutation={CREATE_TRAINEE}
-              refetchQueries={[{ query: GET_TRAINEE_LIST, variables }]}
             >
               {(createTrainee, createrLoader = { loading }) => (
                 <Mutation
                   mutation={UPDATE_TRAINEE}
-                  refetchQueries={[{ query: GET_TRAINEE_LIST, variables }]}
                 >
                   {(updateTrainee, updateLoader = { loading }) => (
 
@@ -244,7 +337,7 @@ class TraineeList extends React.Component {
                             />
                             <br />
                             <br />
-                            <Table1
+                            {/* <Table1
                               loader={isLoaded}
                               id="id"
                               data={data}
@@ -282,12 +375,14 @@ class TraineeList extends React.Component {
                               orderBy={orderBy}
                               order={order}
                               onSelect={this.handleSelect}
-                              count={data.length}
+                              count={totalCount}
                               page={page}
-                              onChangePage={this.handlePageChange(refetch)}
-                              onChangeRowsPerPage={this.handleChangeRowsPerPage}
-                              rowsPerPage={rowsPerPage}
-                            />
+                              onChangePage={(event, newPage) => this.handlePageChange(
+                                event, newPage,
+                              )}
+                              // onChangeRowsPerPage={this.handleChangeRowsPerPage}
+                              rowsPerPage={5}
+                            /> */}
                           </div>
                         </>
                       )}
@@ -311,6 +406,9 @@ TraineeList.propTypes = {
 export default Compose(
   withStyles(useStyles),
   graphql(GET_TRAINEE_LIST, {
-    options: { variables: { skip: 0, limit: 10 } },
+    options: {
+      variables: { skip: 0, limit: 5 },
+      fetchPolicy: 'network-only',
+    },
   }),
 )(TraineeList);

@@ -4,7 +4,7 @@ const GET_TRAINEE_LIST = gql`
 query GetAllTrainees($skip: Int, $limit: Int){
   getAllTrainees(payload: {skip: $skip, limit: $limit}) { 
   message
-  count
+  totalCount
   data {
     name
     email

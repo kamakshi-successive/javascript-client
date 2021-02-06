@@ -103,7 +103,7 @@ class EditDialog extends React.Component {
     } = this.props;
     const { name, email, error, loading } = this.state;
     const { originalId: id } = data;
-    console.log('id in edit: ', data);
+
     return (
       <div>
         <Dialog

@@ -21,7 +21,9 @@ const DELETE_TRAINEE = gql`
 mutation Deletetrainee($originalId: String!) {
     deleteTrainee(payload: {originalId: $originalId} )
     {
+      status
       message
+      result
     }
 }
 `;

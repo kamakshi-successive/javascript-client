@@ -30,7 +30,8 @@ function TableComponent(props) {
     classes, data, column, order, orderBy, onSort, onSelect, count, page, actions,
     rowsPerPage, onChangePage, onChangeRowsPerPage,
   } = props;
-
+  // eslint-disable-next-line no-console
+  console.log('Tables', data);
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table}>
@@ -54,29 +55,28 @@ function TableComponent(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {((rowsPerPage) > 0
-            ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            : data
-          ).map((element) => (
-            <TableRow
-              key={element.id}
-              className={classes.root}
-              onMouseEnter={onSelect(element)}
-            >
-              {column.map(({ field, align, format }) => (
-                <TableCell align={align}>
-                  {format !== undefined
-                    ? format(element[field])
-                    : element[field]}
-                </TableCell>
-              ))}
-              {actions.map(({ icon, handler }) => (
-                <IconButton onClick={handler(element)} className={classes.action}>
-                  {icon}
-                </IconButton>
-              ))}
-            </TableRow>
-          ))}
+          {
+            data.map((element) => (
+              <TableRow
+                key={element.id}
+                className={classes.root}
+                onMouseEnter={onSelect(element)}
+              >
+                {column.map(({ field, align }) => (
+                  <TableCell align={align}>
+                    {/* {format !== undefined
+                      ? format(element[field]) */}
+                    {element[field]}
+                  </TableCell>
+                ))}
+                {actions.map(({ icon, handler }) => (
+                  <IconButton onClick={handler(element)} className={classes.action}>
+                    {icon}
+                  </IconButton>
+                ))}
+              </TableRow>
+            ))
+          }
         </TableBody>
       </Table>
       <TablePagination
