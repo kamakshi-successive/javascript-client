@@ -1,17 +1,14 @@
 /* eslint-disable */
-
 import React from 'react';
 import * as yup from 'yup';
 import PropTypes from 'prop-types';
-// import localStorage from 'local-storage';
 import { Redirect } from 'react-router-dom';
 import {
   TextField, CssBaseline, Card, Typography, Avatar,
   CardContent, withStyles, InputAdornment, Button, CircularProgress,
 } from '@material-ui/core';
 import { Email, VisibilityOff, LockOutlined } from '@material-ui/icons';
-// import localStorage from 'local-storage';
-import callApi from '../../libs/utils/api';
+// import callApi from '../../libs/utils/api';
 import { SnackbarContext } from '../../contexts/SnackBarProvider';
 
 const schema = yup.object().shape({
@@ -65,25 +62,28 @@ class Login extends React.Component {
     };
 
 onClickHandler = async (data , openSnackBar) => {
+  const { email, password } = this.state;
   console.log('Data is :', data);
   this.setState({
     loading: true,
     hasError: true,
   });
- const response1 = await callApi(data, 'post', '/user/login');
- console.log('res1', response1)
-//  console.log('res1 data', response1.token)
-  // localStorage.set('token', response1.token)
-  // console.log('res1 data', response1.token)
+  const  { loginUser } = this.props;
+  console.log('this props', this.props )
+  console.log('login user', { loginUser })
+  const response1 = await loginUser({ variables: {email, password}});
+  console.log('res1', response1)
+  console.log('res1 data', response1.data)
+  console.log('res1 data loginUser', response1.data.loginUser)
   this.setState({ loading: false });
-  if (response1.token) {
+  if (response1.data.loginUser) {
     this.setState({
       redirect: true,
       hasError: false,
       message: 'Successfully Login',
     }, () => {
       const { message } = this.state;
-      localStorage.setItem('token', response1.token);
+      localStorage.setItem('token', response1.data.loginUser);
       openSnackBar(message, 'success');
     });
   } else {
@@ -96,7 +96,7 @@ onClickHandler = async (data , openSnackBar) => {
   }
 }
 
-  hasErrors = () => {
+hasErrors = () => {
     try {
       schema.validateSync(this.state);
     } catch (err) {
@@ -132,6 +132,7 @@ onClickHandler = async (data , openSnackBar) => {
       const {
         email, password, loading,
       } = this.state;
+
       this.hasErrors();
       return (
         <>
@@ -222,6 +223,7 @@ onClickHandler = async (data , openSnackBar) => {
 Login.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
   history: PropTypes.objectOf(PropTypes.any).isRequired,
+  loginUser: PropTypes.func.isRequired,
 };
 
 export default withStyles(Design)(Login);
