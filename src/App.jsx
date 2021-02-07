@@ -13,10 +13,12 @@ import {
   TextFieldDemo,
   Trainee,
 } from './pages';
-import { wrapper } from './pages/Login/index';
+import { loginwrapper } from './pages/Login/index';
 import { AuthRoute, PrivateRoute } from './routes/index';
 import { SnackBarProvider } from './contexts';
 import Apolloclient from './libs/apollo-client';
+// import { Train } from '@material-ui/icons';
+// import { traineewrapper } from './pages/Trainee/index';
 
 function App() {
   return (
@@ -28,7 +30,7 @@ function App() {
               <Route exact path="/">
                 <Redirect to="/trainee" />
               </Route>
-              <AuthRoute path="/login" component={wrapper} />
+              <AuthRoute path="/login" component={loginwrapper} />
               <PrivateRoute path="/CalculatorDemo" component={CalculatorDemo} />
               <PrivateRoute path="/TextFieldDemo" component={TextFieldDemo} />
               <PrivateRoute path="/InputDemo" component={InputDemo} />

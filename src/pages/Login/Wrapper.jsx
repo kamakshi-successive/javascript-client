@@ -8,7 +8,7 @@ const updateCache = (cache, { data: { loginUser } }) => {
   cache.writeData({ data: { token: loginUser } });
   localStorage.setItem('token', loginUser);
 };
-console.log('login user  mutation', LOGIN_USER);
+// console.log('login user  mutation', LOGIN_USER);
 
 export default () => (
 

@@ -7,8 +7,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import PropTypes from 'prop-types';
-import { SnackbarContext } from '../../../../contexts/index';
-import callApi from '../../../../libs/utils/api';
+// import { SnackbarContext } from '../../../../contexts/index';
+// import callApi from '../../../../libs/utils/api';
 
 class DeleteDialog extends Component {
   constructor(props) {
@@ -29,40 +29,6 @@ handleClose = () => {
   this.setState({ open: false });
 };
 
-onClickHandler = async (data, openSnackBar) => {
-  this.setState({
-    loading: true,
-  });
-  console.log('deleted Data', data);
-  const { onSubmit } = this.props;
-  const { _id: id } = data;
-  console.log('_id', id);
-  const response = await callApi(data, 'delete', `/user/${id}`);
-  console.log('Deleted response', response);
-  this.setState({ loading: false });
-  if (response.status === 'ok') {
-    this.setState({
-      message: 'Deleted Successfully ',
-    }, () => {
-      const { message } = this.state;
-      onSubmit(data);
-      openSnackBar(message, 'success');
-    });
-  } else {
-    this.setState({
-      message: 'Error While Deleting',
-    }, () => {
-      const { message } = this.state;
-      openSnackBar(message, 'error');
-    });
-  }
-  // force a re-render
-}
-
-refreshPage = () => {
-  this.setState(window.location.reload());
-}
-
 render() {
   const {
     open, onClose, onSubmit, data,
@@ -82,25 +48,19 @@ render() {
           <Button onClick={onClose} color="primary">
             Cancel
           </Button>
-          <SnackbarContext.Consumer>
-            {({ openSnackBar }) => (
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={() => {
-                  onSubmit({ data });
-                  this.onClickHandler(data, openSnackBar);
-                  this.refreshPage();
-                }}
-              >
-                {loading && (
-                  <CircularProgress size={15} />
-                )}
-                {loading && <span>Deleting</span>}
-                {!loading && <span>Delete</span>}
-              </Button>
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              onSubmit(data);
+            }}
+          >
+            {loading && (
+              <CircularProgress size={15} />
             )}
-          </SnackbarContext.Consumer>
+            {loading && <span>Deleting</span>}
+            {!loading && <span>Delete</span>}
+          </Button>
         </DialogActions>
       </DialogContentText>
     </Dialog>

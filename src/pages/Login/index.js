@@ -1,4 +1,4 @@
-import wrapper from './Wrapper';
+import loginwrapper from './Wrapper';
 
-export { wrapper };
+export { loginwrapper };
 export { default as Login } from './Login';

@@ -69,12 +69,12 @@ onClickHandler = async (data , openSnackBar) => {
     hasError: true,
   });
   const  { loginUser } = this.props;
-  console.log('this props', this.props )
-  console.log('login user', { loginUser })
+  // console.log('this props', this.props )
+  // console.log('login user', { loginUser })
   const response1 = await loginUser({ variables: {email, password}});
-  console.log('res1', response1)
-  console.log('res1 data', response1.data)
-  console.log('res1 data loginUser', response1.data.loginUser)
+  // console.log('res1', response1)
+  // console.log('res1 data', response1.data)
+  // console.log('res1 data loginUser', response1.data.loginUser)
   this.setState({ loading: false });
   if (response1.data.loginUser) {
     this.setState({
@@ -125,7 +125,7 @@ hasErrors = () => {
           [field]: true,
         },
       });
-    }
+    };
 
     render() {
       const { classes } = this.props;

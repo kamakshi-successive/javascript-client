@@ -6,7 +6,7 @@ const LOGIN_USER = gql`
         loginUser(payload: { email: $email, password: $password })
     }
 `;
-console.log('login user  mutation', LOGIN_USER);
+// console.log('login user  mutation', LOGIN_USER);
 export {
   LOGIN_USER,
 };

@@ -8,7 +8,7 @@ import { Email, VisibilityOff, Person } from '@material-ui/icons';
 import { withStyles } from '@material-ui/core/styles';
 import schema from './DialogSchema';
 import CustomTextField from './CustomTextField';
-import callApi from '../../../../libs/utils/api';
+// import callApi from '../../../../libs/utils/api';
 import { SnackbarContext } from '../../../../contexts';
 
 const passwordStyle = () => ({
@@ -85,36 +85,6 @@ class AddDialog extends React.Component {
     }
   };
 
-  onClickHandler = async (data, openSnackBar) => {
-    this.setState({
-      loading: true,
-      hasErrors: true,
-    });
-    const { onSubmit } = this.props;
-    const response = await callApi(data, 'post', '/user/create');
-    this.setState({ loading: false });
-    console.log('response add dialog', response);
-    if (response !== null && response.status === 'ok') {
-      this.setState({
-        hasErrors: false,
-        message: 'Data Added by Authorize Person successfully',
-      },
-      () => {
-        const { message } = this.state;
-        onSubmit(data);
-        openSnackBar(message, 'success');
-      });
-    } else {
-      this.setState({
-        hasErrors: false,
-        message: ' You are not authorize to submitting a data',
-      }, () => {
-        const { message } = this.state;
-        openSnackBar(message, 'error');
-      });
-    }
-  }
-
   isTouched = (field) => {
     const { touched } = this.state;
     this.setState({
@@ -132,16 +102,14 @@ class AddDialog extends React.Component {
     return '';
   }
 
-  refreshPage = () => {
-    this.setState(window.location.reload());
-  }
-
   render() {
     const {
-      open, onClose, classes,
+      // eslint-disable-next-line react/prop-types
+      open, onClose, classes, onSubmit,
     } = this.props;
+    // console.log('onsubmit add ', onSubmit);
     const {
-      id, name, email, password,
+      name, email, password,
     } = this.state;
     const ans = [];
     config.forEach((value) => {
@@ -192,10 +160,10 @@ class AddDialog extends React.Component {
                     color="primary"
                     onClick={
                       () => {
-                        this.onClickHandler({
-                          id, name, email, password,
+                        onSubmit({
+                          name, email, password,
                         }, openSnackBar);
-                        this.refreshPage();
+                        // this.refreshPage();
                       }
                     }
                     disabled={this.hasErrors()}
@@ -215,6 +183,5 @@ export default withStyles(passwordStyle)(AddDialog);
 AddDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
-  onSubmit: PropTypes.func.isRequired,
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
 };

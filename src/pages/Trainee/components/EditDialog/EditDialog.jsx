@@ -97,43 +97,13 @@ class EditDialog extends React.Component {
     return !!iserror.length;
   };
   
-  onClickHandler = async (Data, openSnackBar) => {
-    console.log('data inside edit :', Data)
-    const { onSubmit } = this.props;
-    this.setState({
-      loading: true,
-    });
-    const response = await callApi({id:Data.id, dataToUpdate:{...Data}}, 'put', '/user/update');
-    console.log('Response :', response);
-    this.setState({ loading: false });
-    if (response !== 'undefined') {
-      this.setState({
-        message: ' Updated Successfully',
-      }, () => {
-        const { message } = this.state;
-        openSnackBar(message, 'success');
-      });
-    } else {
-      this.setState({
-        message: 'Error while submitting',
-      }, () => {
-        const { message } = this.state;
-        openSnackBar(message, 'error');
-      });
-    }
-  }
-
-refreshPage = () => {
-  this.setState(window.location.reload());
-}
-  
     render() {
     const {
       Editopen, handleEditClose, handleEdit, data, classes
     } = this.props;
     const { name, email, error, loading } = this.state;
     const { originalId: id } = data;
-    console.log('id in edit: ', id);
+    console.log('id in edit: ', data);
     return (
       <div>
         <Dialog
@@ -205,9 +175,8 @@ refreshPage = () => {
            {({ openSnackBar }) => (
           <Button
           onClick={() => {
-            this.onClickHandler({name, email, id }, openSnackBar)
+            handleEdit({name, email, id }, openSnackBar)
             handleEditClose()
-            this.refreshPage();
             }}
               className={
                 (name === data.name && email === data.email) || this.hasErrors()
