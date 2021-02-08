@@ -5,6 +5,12 @@ mutation CreateTrainee($name: String!, $email: String!, $password: String!) {
     createTrainee(payload: { name: $name, email: $email,password: $password}) {
       message
       status
+      result{
+        name
+        email
+        password
+        originalId
+      }
     }
 }
 `;
@@ -12,7 +18,13 @@ mutation CreateTrainee($name: String!, $email: String!, $password: String!) {
 const UPDATE_TRAINEE = gql`
 mutation UpdateTrainee($id: ID!, $name: String, $email: String) {
     updateTrainee(payload: { id: $id,name: $name, email: $email}){
+      message
       status
+      data {
+        name
+        email
+        originalId
+      }
     }
 }
 `;
@@ -23,7 +35,7 @@ mutation Deletetrainee($originalId: String!) {
     {
       status
       message
-      result
+      originalId
     }
 }
 `;

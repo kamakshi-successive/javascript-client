@@ -63,6 +63,7 @@ class TraineeList extends React.Component {
 
   onSubmitAdd = async (data1, openSnackBar, createTrainee) => {
     const { data: { refetch } } = this.props;
+    console.log('Add this.props', this.props);
     try {
       const { name, email, password } = data1;
       console.log('data in cre :', name, email, password);
@@ -89,7 +90,9 @@ class TraineeList extends React.Component {
 
   handleSort = (field) => (event) => {
     const { order } = this.state;
+    console.log('this.state order', order);
     console.log(event);
+    console.log('field', field);
     this.setState({
       orderBy: field,
       order: order === 'asc' ? 'desc' : 'asc',
@@ -97,8 +100,6 @@ class TraineeList extends React.Component {
   };
 
   handlePageChange = async (event, newPage) => {
-    // const { data: { variables } } = this.props;
-    // console.log('variables', variables);
     const { page } = this.state;
     console.log('page', page);
     console.log('newPage', newPage);
@@ -106,8 +107,6 @@ class TraineeList extends React.Component {
     const limit = 5;
     const skip = limit * newPage;
     await this.setState({ page: newPage }, () => refetch({ skip, limit }));
-    const data = await refetch({ skip, limit });
-    console.log('HandelPageChange', data);
   }
 
   handleRemoveDialogOpen = (element) => (event) => {
@@ -158,12 +157,11 @@ class TraineeList extends React.Component {
     }
   };
 
-  onDeleteTrainee = async (data1, deleteTrainee, openSnackBar) => {
-    const { data: { refetch } } = this.props;
+  onDeleteTrainee = async (data1, deleteTrainee, openSnackBar, refetch) => {
     const { originalId } = data1;
+    console.log('data deleted ', originalId);
     const { rowsPerPage, page } = this.state;
     const response = await deleteTrainee({ variables: { originalId } });
-    console.log('trainee del', response, originalId);
     if (response) {
       this.setState({
         RemoveOpen: false,
@@ -183,12 +181,12 @@ class TraineeList extends React.Component {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData) return prev;
         const { getAllTrainees: { data } } = prev;
-        console.log('trainee created data', data);
+        console.log('Trainee created data', data);
         const { data: { traineeAdded } } = subscriptionData;
-        console.log('trainee Created data........', traineeAdded.originalId);
+        console.log('trainee created data originalID........', traineeAdded.originalId);
         const createdRecords = [...data].map((records) => {
-          console.log('ddddd ', records);
-          if (records.originalId === traineeAdded.originalId) {
+          console.log('Records data original ID....... ', records.originalId);
+          if (records.originalId !== traineeAdded.originalId) {
             console.log('found match ');
             return {
               ...records,
@@ -200,7 +198,7 @@ class TraineeList extends React.Component {
         return {
           getAllTrainees: {
             ...prev.getAllTrainees,
-            ...prev.getAllTrainees.TraineeCount,
+            ...prev.getAllTrainees.traineeCount,
             data: createdRecords,
           },
         };
@@ -212,11 +210,11 @@ class TraineeList extends React.Component {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData) return prev;
         const { getAllTrainees: { data } } = prev;
-        console.log('trainee updated data', data);
+        console.log('Trainee updated data', data);
         const { data: { traineeUpdated } } = subscriptionData;
-        console.log('trainee updated data', traineeUpdated.data.originalId);
+        console.log('Trainee updated data originalId', traineeUpdated.data.originalId);
         const updatedRecords = [...data].map((records) => {
-          console.log('ddddd ', records.originalId);
+          console.log('Trainee updated records originalId ', records.originalId);
           if (records.originalId === traineeUpdated.data.originalId) {
             console.log('found match ');
             return {
@@ -240,15 +238,16 @@ class TraineeList extends React.Component {
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData) return prev;
         const { getAllTrainees: { data } } = prev;
-        console.log('data mmmmmmmmm', data);
+        console.log('data', data);
         const { data: { traineeDeleted } } = subscriptionData;
         console.log('traineeDeleted', traineeDeleted);
         // eslint-disable-next-line max-len
-        const updatedRecords = [...data].filter((records) => records.originalId !== traineeDeleted.result);
+        const updatedRecords = [...data].filter((records) => records.originalId !== traineeDeleted.originalId);
+        console.log('updated Records for delete', updatedRecords);
         return {
           getAllTrainees: {
             ...prev.getAllTrainees,
-            ...prev.getAllTrainees.TraineeCount - 1,
+            ...prev.getAllTrainees.traineeCount - 1,
             data: updatedRecords,
           },
         };
@@ -263,8 +262,6 @@ class TraineeList extends React.Component {
       deleteData,
     } = this.state;
     const { classes } = this.props;
-    const { data: { getAllTrainees = {} } } = this.props;
-    console.log('getAllTrainees', getAllTrainees);
     const {
       data: {
         getAllTrainees: {
@@ -337,9 +334,9 @@ class TraineeList extends React.Component {
                             />
                             <br />
                             <br />
-                            {/* <Table1
+                            <Table1
                               loader={isLoaded}
-                              id="id"
+                              id="originalId"
                               data={data}
                               column={
                                 [
@@ -382,7 +379,7 @@ class TraineeList extends React.Component {
                               )}
                               // onChangeRowsPerPage={this.handleChangeRowsPerPage}
                               rowsPerPage={5}
-                            /> */}
+                            />
                           </div>
                         </>
                       )}

@@ -41,12 +41,12 @@ function TableComponent(props) {
               <TableCell
                 className={classes.header}
                 align={Data.align}
-                sortDirection={orderBy === Data.label ? order : false}
+                sortDirection={orderBy === Data.field ? order : false}
               >
                 <TableSortLabel
-                  active={orderBy === Data.label}
-                  direction={orderBy === Data.label ? order : 'asc'}
-                  onClick={onSort(Data.label)}
+                  active={orderBy === Data.field}
+                  direction={orderBy === Data.field ? order : 'asc'}
+                  onClick={onSort(Data.field)}
                 >
                   {Data.label}
                 </TableSortLabel>

@@ -10,7 +10,6 @@ query GetAllTrainees($skip: Int, $limit: Int){
     email
     createdAt
     originalId
-    id
     }
   }
 }

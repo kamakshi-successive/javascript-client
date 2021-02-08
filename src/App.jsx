@@ -11,14 +11,12 @@ import {
   InputDemo,
   NoMatch,
   TextFieldDemo,
-  // Trainee,
+  Trainee,
 } from './pages';
 import { loginwrapper } from './pages/Login/index';
 import { AuthRoute, PrivateRoute } from './routes/index';
 import { SnackBarProvider } from './contexts';
 import Apolloclient from './libs/apollo-client';
-// import { Train } from '@material-ui/icons';
-import { traineewrapper } from './pages/Trainee/index';
 
 function App() {
   return (
@@ -34,7 +32,7 @@ function App() {
               <PrivateRoute path="/CalculatorDemo" component={CalculatorDemo} />
               <PrivateRoute path="/TextFieldDemo" component={TextFieldDemo} />
               <PrivateRoute path="/InputDemo" component={InputDemo} />
-              <PrivateRoute path="/Trainee" component={traineewrapper} />
+              <PrivateRoute path="/Trainee" component={Trainee} />
               <PrivateRoute component={NoMatch} />
             </Switch>
           </Router>

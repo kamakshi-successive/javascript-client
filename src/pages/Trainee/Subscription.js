@@ -32,7 +32,7 @@ const DELETED_TRAINEE_SUB = gql`
 subscription {
   traineeDeleted{
     status
-    result
+   originalId
     message
   }
 }
