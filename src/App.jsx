@@ -17,8 +17,6 @@ import { loginwrapper } from './pages/Login/index';
 import { AuthRoute, PrivateRoute } from './routes/index';
 import { SnackBarProvider } from './contexts';
 import Apolloclient from './libs/apollo-client';
-// import { Train } from '@material-ui/icons';
-// import { traineewrapper } from './pages/Trainee/index';
 
 function App() {
   return (
